@@ -5,13 +5,13 @@ header-img: img/post-bg-desk.jpg
 email: yml_hubery@sina.com
 description: "You better do what you can."
 keyword: "YML, HY, BY Blog, HuberyYang Blog, YML Blog, YML的博客, hubery, yml, iOS, Apple, iPhone, Mac, Swift"
-url: "http://qiubaiying.github.io"          # your host, for absolute URL
+url: "http://HuberyYang.github.io"          # your host, for absolute URL
 baseurl: ""      # for example, '/blog' if your blog hosted on 'host/blog'
 github_repo: "https://github.com/HuberyYang/HuberyYang.github.io.git" # you code repository
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "Goals determine what you going to be!"
+sidebar-about-description: "You can be just the one you wanna be."
 sidebar-avatar: /img/about-BY-gentle.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
