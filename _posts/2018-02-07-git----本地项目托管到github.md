@@ -55,8 +55,7 @@ GitHub上项目clone包含`HTTPS`、`SSH`两种方式，而使用`SSH`进行远�
 创建好之后大概如下：
 ![](http://upload-images.jianshu.io/upload_images/2475558-b1a030b5371f1857.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-**本地项目托管到GitHub**
-
+#####本地项目托管到GitHub
 1.以仓库名称在本地创建一个项目
 ![](http://upload-images.jianshu.io/upload_images/2475558-5ba3a97bc00db94e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 2.进入项目文件夹内 ，执行命令`cd ProjectTest`
