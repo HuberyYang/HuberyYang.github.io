@@ -1,5 +1,6 @@
 目前，项目管理除了SVN还可以使用Git，下面介绍怎么将项目托管到GitHub。
-#####注册GitHub账号
+
+####注册GitHub账号
 前往GitHub主页[https://github.com](https://github.com/)注册账号，之后登入。![账号注册入口](http://upload-images.jianshu.io/upload_images/2475558-d7d19652b3cc8dd2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 #####配置ssh
