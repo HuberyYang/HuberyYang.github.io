@@ -1,3 +1,16 @@
+--- 
+layout:     post                      
+title:      iOS使用uicollectionview实现可旋转菜单
+subtitle:   iOS使用uicollectionview实现可旋转菜单
+date:       2017-01-01               
+author:     HuberyYang                
+header-img: img/post-bg-desk.jpg  
+catalog:    true                     
+tags:                             
+    - iOS
+    - OC
+---
+
 1.由于UICollectionVIew是依赖于UICollectionViewFlowLayout进行布局，而UICollectionViewFlowLayout 继承自 UICollectionViewLayout，所以如果我们想进行个性化布局，可以新建一个UICollectionViewLayout的子类来进行个性化布局。
 
 ```Objective-c

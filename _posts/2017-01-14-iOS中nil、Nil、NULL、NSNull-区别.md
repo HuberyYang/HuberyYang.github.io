@@ -1,3 +1,16 @@
+--- 
+layout:     post                      
+title:      iOS中nil、nil、null、nsnull 区别
+subtitle:   iOS中nil、nil、null、nsnull 区别
+date:       2017-01-14               
+author:     HuberyYang                
+header-img: img/post-bg-desk.jpg  
+catalog:    true                     
+tags:                             
+    - iOS
+    - OC
+---
+
 >编码的时候会时不时的遇到 nil、Nil、NULL、NSNull 中某一个，傻傻的分不清用法，现在我们来看看他们之间的区别
 
 ####1.nil 是 ObjC 对象的字面空值，对应 id 类型的对象，或者使用 @interface 声明的 ObjC 对象

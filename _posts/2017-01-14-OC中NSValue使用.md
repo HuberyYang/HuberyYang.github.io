@@ -1,6 +1,20 @@
+--- 
+layout:     post                      
+title:      OC中nsvalue使用
+subtitle:   OC中nsvalue使用
+date:       2017-01-14               
+author:     HuberyYang                
+header-img: img/post-bg-desk.jpg  
+catalog:    true                     
+tags:                             
+    - iOS
+    - OC
+---
+
 NSValue对象是用来存储一个C或者Objective－C数据的简单容器。它可以保存任意类型的数据，如int，float，char，pointers,structures,  objectids。
 
 1.初始化NSValue 并存入相应的值，然后再取出
+
 ```
 int a = 10;  
           
@@ -18,6 +32,7 @@ int a1;
 NSLog(@"a1 = %d", a1); 
 ```
 2.存取结构体
+
 ```
 typedef struct{  
     int x;  
@@ -35,6 +50,7 @@ MyPoint p1;
 NSLog(@"%d %d", p1.x, p1.y);  
 ```
 3.NSRange的存取 
+
 ```
 NSRange range = {1, 4};  
 NSValue *v3 = [NSValue valueWithRange:range];  

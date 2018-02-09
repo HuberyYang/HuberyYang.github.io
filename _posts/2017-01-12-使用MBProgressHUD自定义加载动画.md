@@ -1,3 +1,16 @@
+--- 
+layout:     post                      
+title:      MBProgressHUD自定义加载动画
+subtitle:   MBProgressHUD自定义加载动画
+date:       2017-01-12               
+author:     HuberyYang                
+header-img: img/post-bg-desk.jpg  
+catalog:    true                     
+tags:                             
+    - iOS
+    - OC
+---
+
 MBProgressHUD除了内置的加载效果外，还支持用户自定义加载效果。我们可以使用自定义imageView 加载gif 图片实现动画效果，过程如下：
 
 ```
