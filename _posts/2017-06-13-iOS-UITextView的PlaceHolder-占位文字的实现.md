@@ -1,7 +1,22 @@
+--- 
+layout:     post                      
+title:      iOS Uitextview的placeholder 占位文字的实现
+subtitle:   Uitextview 扩展添加 placeholder 占位文字
+date:       2017-06-13                 
+author:     HuberyYang                
+header-img: img/post-bg-desk.jpg  
+catalog:    true                     
+tags:                             
+    - iOS
+    - OC
+---
+
 UITextView的PlaceHolder 占位文字的实现方法网上已经有很多了，特别是 [VV木公](http://www.jianshu.com/u/93131dfba96a) 的 [史上最全的iOS之UITextView实现placeHolder占位文字的N种方法](http://www.jianshu.com/p/9edb8be75e0b) 文章里面总结的很全面，我只是对里面最后一种方法封装了一下，方便以后偷懒 ~ 嘻嘻
 
 - .h 文件
-```
+
+
+```objc
     #import <UIKit/UIKit.h>  
       
     @interface UITextView (PlaceHolder)  
@@ -20,7 +35,7 @@ UITextView的PlaceHolder 占位文字的实现方法网上已经有很多了，�
 
 .m文件
 
-```
+```objc
 #import "UITextView+PlaceHolder.h"  
 #import <objc/runtime.h>  
   
