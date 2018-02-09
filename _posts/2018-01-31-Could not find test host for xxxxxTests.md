@@ -1,7 +1,7 @@
 --- 
 layout:     post                      
 title:      Could not find test host for xxxxTests
-subtitle:   单元测试报错：Could not find test host for xxxxTests:
+subtitle:   单元测试报错：Could not find test host for xxxxTests
 date:       2018-01-31                  
 author:     HuberyYang                
 header-img: img/post-bg-desk.jpg  
