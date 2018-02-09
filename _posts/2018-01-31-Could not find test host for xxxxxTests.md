@@ -8,7 +8,7 @@ header-img: img/post-bg-desk.jpg
 catalog:    true                     
 tags:                             
     - iOS
-    - Errors 
+    - Collections 
 ---
 
 单元测试报错：Could not find test host for xxxxTests: ，意为无法找到需要进行单元测试的 Target，完整的错误信息如下：

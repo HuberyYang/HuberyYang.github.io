@@ -1,7 +1,7 @@
 --- 
 layout:     post                      
-title:      OC中nsvalue使用
-subtitle:   OC中nsvalue使用
+title:      OC中NSValue使用
+subtitle:   OC中NSValue使用
 date:       2017-01-14               
 author:     HuberyYang                
 header-img: img/post-bg-desk.jpg  
