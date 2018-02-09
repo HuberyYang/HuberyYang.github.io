@@ -63,8 +63,8 @@ kramdown:
 # Gitalk
 gitalk:
   enable: true    #是否开启Gitalk评论
-  clientID: f19844484df7e66d5cd9   #生成的clientID
-  clientSecret: 00f8af2be94bc5c41a39c376692779fe061cf4ce  #同上
+  clientID: 86c7e1b8098cc6eb8cb8   #生成的clientID
+  clientSecret: 180a21b86e440cc485cfce29c9a22862a29c9879  #同上
   repo: HuberyYang.github.io    #仓库名称
   owner: HuberyYang    #github用户名
   admin: HuberyYang
