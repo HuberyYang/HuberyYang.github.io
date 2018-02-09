@@ -1,3 +1,15 @@
+--- 
+layout: post                      # 使用的布局（不需要改） 
+title: Git 本地项目托管到github     # 标题 
+subtitle: Git 本地项目托管到github  # 副标题 
+date: 2018-02-07                  # 时间 
+author: HuberyYang                # 作者 
+header-img: img/post-bg-2015.jpg  # 这篇文章标题背景图片 catalog: true                     # 是否归档 
+tags:                             # 标签 
+	- Git 
+---
+
+
 目前，项目管理除了SVN还可以使用Git，下面介绍怎么将项目托管到GitHub。
 
 **注册GitHub账号**
