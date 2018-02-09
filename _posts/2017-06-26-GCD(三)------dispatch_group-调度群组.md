@@ -1,12 +1,21 @@
-> #### [GCD(一) — 进程、线程、队列、同步、异步 概念区分与使用](https://www.jianshu.com/p/a74c09f09a3b)
->#### [GCD(二) — dispatch_semaphore 信号量](https://www.jianshu.com/p/89d4e7c5b5cb)
->#### [GCD(四) — dispatch_apply、dispatch_barrier](https://www.jianshu.com/p/1cda1b78aadc)
-
-* * *
+--- 
+layout:     post                      
+title:      Gcd(三) Dispatch_group 调度群组
+subtitle:   Dispatch_group
+date:       2017-06-27                 
+author:     HuberyYang                
+header-img: img/post-bg-desk.jpg  
+catalog:    true                     
+tags:                             
+    - iOS
+    - OC
+    - GCD
+    - 线程
+---
 
 假设一下下面的场景：某APP首页分为多个功能模块，每个模块使用不同的数据接口，为了提升用户体验，在加载首页时可以先将所有模块数据拿到后再加载UI，但不用考虑哪个模块先得到数据。这种情况下使用GCD的 `dispatch_group 调度群组` 很容易处理。
 
-### **dispatch_group 包含的函数**
+**dispatch_group 包含的函数**
 
 ```
 /* 生成 group 实例 */
@@ -44,7 +53,7 @@ dispatch_group_notify(<#dispatch_group_t _Nonnull group#>, <#dispatch_queue_t _N
 
 ```
 
-### **使用dispatch_group_wait**
+**使用dispatch_group_wait**
 
 ```
 dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -67,7 +76,7 @@ NSLog(@"执行后续任务");
 
 ![](http://upload-images.jianshu.io/upload_images/2475558-5759920039647f73?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-### **使用dispatch_group_notify**
+**使用dispatch_group_notify**
 
 ```
 dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -93,7 +102,7 @@ dispatch_group_notify(group, queue, ^{
 
 ![](http://upload-images.jianshu.io/upload_images/2475558-3fbaaeaafd3f3809?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-### **dispatch_group_enter 与 dispatch_group_leave 的使用**
+**dispatch_group_enter 与 dispatch_group_leave 的使用**
 
 如果在调度群组关联的block内直接异步提交新的任务，group 不会等待嵌套的异步任务执行完毕后在进入 `dispatch_group_notify` 和 `dispatch_group_wait` 状态，如：
 
@@ -162,7 +171,7 @@ dispatch_group_notify(group, queue, ^{
 
 ![](http://upload-images.jianshu.io/upload_images/2475558-17f64b34f95edcf9?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-#### **此外，dispatch_group_enter 与 dispatch_group_leave 也可以直接使用，但需要保持两者调用次数一致，配合异步执行，其效果和 `dispatch_group_async` 类似**
+> 此外，dispatch_group_enter 与 dispatch_group_leave 也可以直接使用，但需要保持两者调用次数一致，配合异步执行，其效果和 `dispatch_group_async` 类似
 
 ```
 dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
