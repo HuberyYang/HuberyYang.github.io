@@ -7,9 +7,9 @@ author:     HuberyYang
 header-img: img/post-bg-2015.jpg  
 catalog:    true                     
 tags:                             
-	- Git 
-	- iOS
-	- ProjectManager
+    - Git 
+    - iOS
+    - ProjectManager
 ---
 
 
