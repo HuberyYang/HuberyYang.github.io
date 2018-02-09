@@ -1,3 +1,16 @@
+--- 
+layout:     post                      
+title:      Could not find test host for xxxxTests
+subtitle:   单元测试报错：Could not find test host for xxxxTests:
+date:       2018-01-31                  
+author:     HuberyYang                
+header-img: img/post-bg-desk.jpg  
+catalog:    true                     
+tags:                             
+    - iOS
+    - Errors 
+---
+
 单元测试报错：Could not find test host for xxxxTests: ，意为无法找到需要进行单元测试的 Target，完整的错误信息如下：
 ![屏幕快照](http://upload-images.jianshu.io/upload_images/2475558-b354c616e439b697.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
