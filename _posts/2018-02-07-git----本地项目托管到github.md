@@ -1,9 +1,11 @@
 目前，项目管理除了SVN还可以使用Git，下面介绍怎么将项目托管到GitHub。
 
-####注册GitHub账号
+**注册GitHub账号**
+
 前往GitHub主页[https://github.com](https://github.com/)注册账号，之后登入。![账号注册入口](http://upload-images.jianshu.io/upload_images/2475558-d7d19652b3cc8dd2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-#####配置ssh
+**配置ssh**
+
 GitHub上项目clone包含`HTTPS`、`SSH`两种方式，而使用`SSH`进行远程操作时是不需要输入账号密码的，所以你懂的。
 
 - 查看个人文件中是否包含`.ssh`文件夹
@@ -27,7 +29,8 @@ GitHub上项目clone包含`HTTPS`、`SSH`两种方式，而使用`SSH`进行远�
 ![.ssh下文件](http://upload-images.jianshu.io/upload_images/2475558-8ee130a96febf4f2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 执行命令`cat id_rsa.pub`,如果你自定义文件名，则执行命令`cat 自定义名字.pub`，查看文件内容，然后复制待用
 
-#####GitHub上添加 ssh key
+**GitHub上添加 ssh key**
+
 1.进入个人设置
 ![进入设置](http://upload-images.jianshu.io/upload_images/2475558-7d658479d915b82e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 2.新建`ssh key`
@@ -40,7 +43,8 @@ GitHub上项目clone包含`HTTPS`、`SSH`两种方式，而使用`SSH`进行远�
 连接成功后钥匙图标回变成绿色
 ![连接成功](http://upload-images.jianshu.io/upload_images/2475558-de59401498e2fef2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-#####创建GitHub仓库
+**创建GitHub仓库**
+
 点击个人选择项`Your profiles`,选择`Repositories`,然后选择`New`
 ![](http://upload-images.jianshu.io/upload_images/2475558-276754ba6aeb5515.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 ![](http://upload-images.jianshu.io/upload_images/2475558-fa52aa5278af85e3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
@@ -51,7 +55,8 @@ GitHub上项目clone包含`HTTPS`、`SSH`两种方式，而使用`SSH`进行远�
 创建好之后大概如下：
 ![](http://upload-images.jianshu.io/upload_images/2475558-b1a030b5371f1857.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-#####本地项目托管到GitHub
+**本地项目托管到GitHub**
+
 1.以仓库名称在本地创建一个项目
 ![](http://upload-images.jianshu.io/upload_images/2475558-5ba3a97bc00db94e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 2.进入项目文件夹内 ，执行命令`cd ProjectTest`
