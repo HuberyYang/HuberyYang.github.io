@@ -1,10 +1,20 @@
-> #### [GCD(一) — 进程、线程、队列、同步、异步 概念区分与使用](https://www.jianshu.com/p/a74c09f09a3b)
->#### [GCD(二) — dispatch_semaphore 信号量](https://www.jianshu.com/p/89d4e7c5b5cb)
->#### [GCD(三) — dispatch_group 调度群组](https://www.jianshu.com/p/f2c579afc068)
+--- 
+layout:     post                      
+title:      Gcd(四) Dispatch_apply、dispatch_barrier
+subtitle:   Dispatch_apply、dispatch_barrier
+date:       2017-06-30                 
+author:     HuberyYang                
+header-img: img/post-bg-desk.jpg  
+catalog:    true                     
+tags:                             
+    - iOS
+    - OC
+    - GCD
+    - 线程
+---
 
-* * *
 
-## **dispatch_apply**
+## dispatch_apply
 
 `dispatch_apply` 可以像 for 循环一样多次执行其绑定的block，在所有block任务完成之后，再进行后续任务
 
