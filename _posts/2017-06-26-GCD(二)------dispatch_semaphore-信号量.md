@@ -1,12 +1,21 @@
-> #### [GCD(一) — 进程、线程、队列、同步、异步 概念区分与使用](https://www.jianshu.com/p/a74c09f09a3b)
->#### [GCD(三) — dispatch_group 调度群组](https://www.jianshu.com/p/f2c579afc068)
->#### [GCD(四) — dispatch_apply、dispatch_barrier](https://www.jianshu.com/p/1cda1b78aadc)
-
-* * *
+--- 
+layout:     post                      
+title:      Gcd(二) Dispatch_semaphore 信号量
+subtitle:   Dispatch_semaphore
+date:       2017-06-26                 
+author:     HuberyYang                
+header-img: img/post-bg-desk.jpg  
+catalog:    true                     
+tags:                             
+    - iOS
+    - OC
+    - GCD
+    - 线程
+---
 
 在实际场景中我们需要对某一公共资源进行保护或者一些任务依次之间存在依赖关系，在GCD中可以使用一下几种处理方式：
 
-### **串行队列**
+**串行队列**
 
 ```
 dispatch_queue_t sQueue = dispatch_queue_create("com.dis.seri", DISPATCH_QUEUE_SERIAL);
@@ -33,7 +42,7 @@ dispatch_queue_t sQueue = dispatch_queue_create("com.dis.seri", DISPATCH_QUEUE_S
     });
 ```
 
-### **同步执行**
+**同步执行**
 
 ```
 dispatch_queue_t cQueue = dispatch_queue_create("com.dis.curr", DISPATCH_QUEUE_CONCURRENT);
@@ -60,13 +69,13 @@ dispatch_queue_t cQueue = dispatch_queue_create("com.dis.curr", DISPATCH_QUEUE_C
     });
 ```
 
-### **信号量**
+**信号量**
 
-#### 什么是信号量？
-
+> 什么是信号量？
+> 
 > 信号量可以理解为一个资源计数器，通过控制可用资源数来控制任务的并发数量。同时，信号量是一个特殊的变量，程序对其访问都是原子操作，且只允许对它进行等待（即P(信号变量))和发送（即V(信号变量))信息操作。
 
-*   **信号量有3个函数，分别为**
+* 信号量有3个函数，分别为
 
 ```
 //用于创建信号量
@@ -84,7 +93,7 @@ dispatch_semaphore_signal(dispatch_semaphore_t dsema);
 
 ```
 
-*   **通过信号量建立依赖关系**
+* 通过信号量建立依赖关系
 
 ```
 //创建一个信号量，设置初始资源数
@@ -146,7 +155,7 @@ dispatch_semaphore_signal(dispatch_semaphore_t dsema);
 
 ![](http://upload-images.jianshu.io/upload_images/2475558-1087948842f2c5c2?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-*   **通过信号量控制最大并发数**
+* 通过信号量控制最大并发数
 
 ```
 //预设可用资源为2
