@@ -82,9 +82,12 @@ GitHub上项目clone包含`HTTPS`、`SSH`两种方式，而使用`SSH`进行远�
 ![](http://upload-images.jianshu.io/upload_images/2475558-39933d79cdc45e6c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 6.将变动由工作区提交到暂存区,命令 `git add .`
 > __git add -u与-A .三者的区别:__
- `git add -u` 将文件的修改、文件的删除，添加到暂存区。
-`git add .` 将文件的修改，文件的新建，添加到暂存区。
-`git add -A` 将文件的修改，文件的删除，文件的新建，添加到暂存区。
+> 
+> `git add -u` 将文件的修改、文件的删除，添加到暂存区。
+
+> `git add .`  将文件的修改，文件的新建，添加到暂存区。
+
+> `git add -A` 将文件的修改，文件的删除，文件的新建，添加到暂存区。
 
 7.将变动由暂存区提交到提交区,命令 `git commit -m"提交信息"`，“提交信息”是对此次操作的备注
 8.将变动由提交区更新到远程仓库，先执行命令`git pull --rebase origin master`,无报错之后执行`git push origin master`,完成之后你的项目就已经托管到GitHub上了
