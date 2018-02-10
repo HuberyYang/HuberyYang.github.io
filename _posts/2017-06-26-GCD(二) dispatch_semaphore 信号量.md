@@ -4,7 +4,7 @@ title:      Gcd(二) Dispatch_semaphore 信号量
 subtitle:   Dispatch_semaphore
 date:       2017-06-26                 
 author:     HuberyYang                
-header-img: img/post-bg-desk.jpg  
+header-img: img/article_head_queue.jpg
 catalog:    true                     
 tags:                             
     - iOS

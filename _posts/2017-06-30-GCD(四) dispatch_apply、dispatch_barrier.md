@@ -4,7 +4,7 @@ title:      Gcd(四) Dispatch_apply、dispatch_barrier
 subtitle:   Dispatch_apply、dispatch_barrier
 date:       2017-06-30                 
 author:     HuberyYang                
-header-img: img/post-bg-desk.jpg  
+header-img: img/article_head_queue.jpg
 catalog:    true                     
 tags:                             
     - iOS

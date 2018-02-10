@@ -4,7 +4,7 @@ title:      Gcd(三) Dispatch_group 调度群组
 subtitle:   Dispatch_group
 date:       2017-06-27                 
 author:     HuberyYang                
-header-img: img/post-bg-desk.jpg  
+header-img: img/article_head_queue.jpg
 catalog:    true                     
 tags:                             
     - iOS
