@@ -4,7 +4,7 @@ title:      Git 本地项目托管到github
 subtitle:   将本地项目上传到github进行托管  
 date:       2018-02-07                  
 author:     HuberyYang                
-header-img: img/post-bg-desk.jpg  
+header-img: img/article_head_git.jpg
 catalog:    true                     
 tags:                             
     - Git 
