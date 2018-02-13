@@ -97,8 +97,8 @@ layout: default
                     admin: ['{{site.gitalk.admin}}'],
                     
                     distractionFreeMode: {{site.gitalk.distractionFreeMode}},
-                    // id: window.location.pathname,
-                    id:md5(location.href),
+                    id: window.location.pathname,
+                    // id:md5(location.href),
                     });
                     gitalk.render('gitalk-container');
 
