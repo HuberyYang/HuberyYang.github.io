@@ -3,8 +3,8 @@ title: HuberyYang Blog
 SEOTitle: HuberyYang的博客 | HuberyYang Blog
 header-img: img/home_head.jpg
 email: yml_hubery@sina.com
-description: "You better do what you can."
-keyword: "HY, BY Blog, HuberyYang Blog, hubery, iOS, Apple, iPhone, Mac, Swift"
+description: "HuberyYang's blog,record of my coding"
+keyword: "HuberyYang Blog, huberyyang, iOS, Swift, Apple, iPhone, Mac, BY Blog"
 url: "http://HuberyYang.github.io"          # your host, for absolute URL
 baseurl: ""      # for example, '/blog' if your blog hosted on 'host/blog'
 github_repo: "https://github.com/HuberyYang/HuberyYang.github.io.git" # you code repository
