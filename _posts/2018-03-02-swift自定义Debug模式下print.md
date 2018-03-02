@@ -1,10 +1,10 @@
 --- 
 layout:     post                      
-title:      swift全局print
+title:      swift自定义Debug模式下print
 subtitle:   swift debug 状态下全局打印, 打印信息包含打印时间、文件名、函数名、行数，便于程序调试
 date:       2018-03-02                 
 author:     HuberyYang                
-header-img: img/article_head_queue.jpg
+header-img: img/article_head_print.jpg
 catalog:    true                     
 tags:                             
     - iOS
