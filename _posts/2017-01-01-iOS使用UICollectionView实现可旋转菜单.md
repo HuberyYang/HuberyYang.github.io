@@ -67,28 +67,14 @@ tags:
               
             NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];  
             UICollectionViewLayoutAttributes * attris = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];  
-            //设置item大小 
+            // 设置item大小 
              
             attris.size = CGSizeMake(_rLength, _rLength);  
-            //计算每个item的圆心位置  
+            // 计算每个item的圆心位置  
+             
+            // 计算每个item中心的坐标  
             
-            /* 
-            
-             . 
-             
-             . . 
-             
-             .   . r 
-             
-             .     . 
-             
-             ......... 
-             
-             */  
-             
-            //计算每个item中心的坐标  
-            
-            //算出的x y值还要减去item自身的半径大小  
+            // 算出的x y值还要减去item自身的半径大小  
             
             float x = center.x + cosf(22 * M_PI / _itemCount * i + _rotationAngle) * (radius - _rLength / 2.0);  
             float y = center.y + sinf(22 * M_PI / _itemCount * i + _rotationAngle) * (radius - _rLength / 2.0);  
