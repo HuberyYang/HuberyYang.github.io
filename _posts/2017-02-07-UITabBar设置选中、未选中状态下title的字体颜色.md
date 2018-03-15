@@ -16,7 +16,7 @@ tags:
 ```
 self.tabBar.tintColor = [UIColor redColor];
 ```
-2.但如果要将未选中状态和选中状态下的颜色都改变，可以使用 ` setTitleTextAttributes:<#(nullable NSDictionary<NSString *,id> *)#> forState:<#(UIControlState)#> `达到效果
+2.但如果要将未选中状态和选中状态下的颜色都改变，可以使用   setTitleTextAttributes:<#(nullable NSDictionary<NSString *,id> *)#> forState:<#(UIControlState)#>  达到效果
 
 ```
 [[UITabBarItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor redColor]} forState:UIControlStateNormal];  

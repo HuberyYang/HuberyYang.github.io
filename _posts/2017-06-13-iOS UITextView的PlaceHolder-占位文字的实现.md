@@ -33,11 +33,13 @@ UITextView的PlaceHolder 占位文字的实现方法网上已经有很多了，�
     @end  
 ```
 
-.m文件
+- .m文件
 
 ```objc
 #import "UITextView+PlaceHolder.h"  
+
 #import <objc/runtime.h>  
+  
   
 static NSString *placeHoldLabelKey = @"placeHoldLabelKey";  
 static NSString *placeHoldStringKey = @"placeHoldStringKey";  
