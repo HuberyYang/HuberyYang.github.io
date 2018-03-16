@@ -1,6 +1,6 @@
 --- 
 layout:     post                      
-title:      swift自定义Debug模式下print - xxx001
+title:      swift自定义Debug模式下print
 subtitle:   swift debug 状态下全局打印, 打印信息包含打印时间、文件名、函数名、行数，便于程序调试
 keywords:   swift,debug 状态下全局打印,debug,打印
 date:       2018-03-02                 
