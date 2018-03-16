@@ -18,13 +18,12 @@ sidebar-avatar: /img/apple-touch-icon.png      # use absolute URL, seeing it's u
 
 # SNS settings
 RSS: false
-# weibo_username:     qiubaiying
 #twitter_username:   qiubaiying
 #facebook_username:  baiying.qiu.7
 github_username:    HuberyYang
 jianshu_username:   1761c2e474c7
 zhihu_username:     yml_hubery
-
+weibo_username:     5809782128
 
 
 
