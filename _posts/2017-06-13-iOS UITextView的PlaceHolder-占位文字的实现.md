@@ -2,6 +2,7 @@
 layout:     post                      
 title:      iOS Uitextview的placeholder 占位文字的实现
 subtitle:   Uitextview 扩展添加 placeholder 占位文字
+keywords:   ios,Uitextview,placeholder,占位文字
 date:       2017-06-13                 
 author:     HuberyYang                
 header-img: img/post-bg-desk.jpg  

@@ -2,6 +2,7 @@
 layout:     post                      
 title:      UITabBar 设置选中、未选中状态下title的字体颜色
 subtitle:   UITabBar 设置选中、未选中状态下title的字体颜色
+keywords:   ios,UITabBar,UITabBar title属性,选中、未选中
 date:       2017-02-07               
 author:     HuberyYang                
 header-img: img/post-bg-desk.jpg  

@@ -1,7 +1,8 @@
 --- 
 layout:     post                      
-title:      Gcd(四) Dispatch_apply、dispatch_barrier
-subtitle:   Dispatch_apply、dispatch_barrier
+title:      GCD(四) dispatch_apply、dispatch_barrier
+subtitle:   dispatch_apply、dispatch_barrier
+keywords:   ios,GCD,dispatch_apply,dispatch_barrier
 date:       2017-06-30                 
 author:     HuberyYang                
 header-img: img/article_head_queue.jpg

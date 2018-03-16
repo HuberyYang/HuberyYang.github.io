@@ -1,7 +1,8 @@
 --- 
 layout:     post                      
-title:      Gcd(二) Dispatch_semaphore 信号量
-subtitle:   Dispatch_semaphore
+title:      GCD(二) dispatch_semaphore 信号量
+subtitle:   dispatch_semaphore
+keywords:   ios,GCD,dispatch_semaphore,信号量
 date:       2017-06-26                 
 author:     HuberyYang                
 header-img: img/article_head_queue.jpg

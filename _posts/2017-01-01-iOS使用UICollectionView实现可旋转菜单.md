@@ -2,6 +2,7 @@
 layout:     post                      
 title:      iOS使用UICollectionView实现可旋转菜单
 subtitle:   iOS使用UICollectionView实现可旋转菜单
+keywords:   ios,UICollectionView,旋转菜单
 date:       2017-01-01               
 author:     HuberyYang                
 header-img: img/post-bg-desk.jpg  

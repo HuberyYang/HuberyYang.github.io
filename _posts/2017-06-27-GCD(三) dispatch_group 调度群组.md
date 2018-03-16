@@ -1,7 +1,8 @@
 --- 
 layout:     post                      
-title:      Gcd(三) Dispatch_group 调度群组
-subtitle:   Dispatch_group
+title:      GCD(三) dispatch_group 调度群组
+subtitle:   dispatch_group
+keywords:   ios,GCD,dispatch_group,调度群组
 date:       2017-06-27                 
 author:     HuberyYang                
 header-img: img/article_head_queue.jpg

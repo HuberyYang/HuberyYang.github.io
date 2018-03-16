@@ -1,7 +1,8 @@
 --- 
 layout:     post                      
 title:      iOS 自定义设置UITabBar角标BadgeView的背景色
-subtitle:   自定义设置UITabBar角标BadgeView的背景色
+subtitle:   iOS自定义设置UITabBar角标BadgeView的背景色
+keywords:   ios,自定义UITabBar,UITabBar,角标BadgeView,BadgeView
 date:       2017-03-04                
 author:     HuberyYang                
 header-img: img/post-bg-desk.jpg  

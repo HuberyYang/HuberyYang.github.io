@@ -2,6 +2,7 @@
 layout:     post                      
 title:      MBProgressHUD自定义加载动画
 subtitle:   MBProgressHUD自定义加载动画
+keywords:   ios,MBProgressHUD,自定义加载动画
 date:       2017-01-12               
 author:     HuberyYang                
 header-img: img/post-bg-desk.jpg  
