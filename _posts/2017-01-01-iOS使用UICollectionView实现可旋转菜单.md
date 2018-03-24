@@ -43,37 +43,36 @@ tags:
     [super prepareLayout];
     
     // 按钮个数
+    
     _itemCount = (int)[self.collectionView numberOfItemsInSection:0];
     _attributeAttay = [[NSMutableArray alloc] init];
     // 先设定大圆的半径 取长和宽最短的
+    
     CGFloat radius = MIN(self.collectionView.frame.size.width, self.collectionView.frame.size.height) / 2.2;
     // 圆心位置
+    
     CGPoint center = CGPointMake(self.collectionView.frame.size.width / 2.0, self.collectionView.frame.size.height / 2.0);
     
     _rLength = _itemRadius;
     
     // 设置每个item的大小
+    
     for (int idx = 0; idx < _itemCount; idx ++) {
         
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:idx inSection:0];
         UICollectionViewLayoutAttributes * attris = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
         // 设置item大小
+        
         attris.size = CGSizeMake(_rLength, _rLength);
         
         if (_itemCount == 1) {            
             attris.center = self.collectionView.center;
         } else {
             
-            // 计算每个item的圆心位置
-            /*
-             .
-             . .
-             .   . r
-             .     .
-             .........
-             */
             // 计算每个item中心的坐标
+            
             // 算出的x，y值还要减去item自身的半径大小
+            
             float x = center.x + cosf(2 * M_PI / _itemCount * idx + _rotationAngle) * (radius - _rLength / 2.0);
             float y = center.y + sinf(2 * M_PI / _itemCount * idx + _rotationAngle) * (radius - _rLength / 2.0);
             
@@ -84,11 +83,13 @@ tags:
 }
 
 // contentSize 的大小
+
 - (CGSize)collectionViewContentSize{
     return self.collectionView.frame.size;
 }
 
 // cell / header / footer 的frame数组
+
 - (NSArray<UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect{
     return _attributeAttay;
 }
@@ -106,6 +107,7 @@ tags:
     CGFloat rLength = sqrt((point.x - centerPoint.x) * (point.x - centerPoint.x) + (point.y - centerPoint.y) * (point.y - centerPoint.y));
     
     // 手势范围限制
+    
     if (!(rLength <= [self.largeRadius floatValue] && rLength >= [self.smallRadius floatValue])) {
         return;
     }
@@ -122,6 +124,7 @@ tags:
     CGFloat rLength = sqrt((point.x - centerPoint.x) * (point.x - centerPoint.x) + (point.y - centerPoint.y) * (point.y - centerPoint.y));
     
     // 手势范围限制
+    
     if (!(rLength <= [self.largeRadius floatValue] && rLength >= [self.smallRadius floatValue])) {
         return;
     }
@@ -135,7 +138,9 @@ tags:
 
 ```objc
 #pragma mark -- 按钮滑动，重新布局
+
 // 滑动开始
+
 - (void)touchBegin:(NSNotification *)sender{
     if (!_rotate) return;
     _centerPoint = self.collectionView.center;
@@ -145,12 +150,14 @@ tags:
 }
 
 // 正在滑动中
+
 - (void)touchMoving:(NSNotification *)sender{
     if (!_rotate) return;
     NSDictionary *dic = sender.userInfo;
     CGPoint point = CGPointMake([dic[@"x"] floatValue], [dic[@"y"] floatValue]);
     
     // 以collectionView center为中心计算滑动角度
+    
     CGFloat rads = [self angleBetweenFirstLineStart:_centerPoint firstLineEnd:_lastPoint andSecondLineStart:_centerPoint secondLineEnd:point];
     
     if (_lastPoint.x != _centerPoint.x && point.x != _centerPoint.x) {
@@ -166,13 +173,16 @@ tags:
     
     _layout.rotationAngle = _totalRads;
     // 重新布局
+    
     [_layout invalidateLayout];
     
     // 更新记录点
+    
     _lastPoint = point;
 }
 
 // 两条直线之间的夹角
+
 - (CGFloat)angleBetweenFirstLineStart:(CGPoint)firstLineStart firstLineEnd:(CGPoint)firstLineEnd andSecondLineStart:(CGPoint)secondLineStart secondLineEnd:(CGPoint)secondLineEnd{
     
     CGFloat a1 = firstLineEnd.x - firstLineStart.x;
@@ -181,8 +191,11 @@ tags:
     CGFloat b2 = secondLineEnd.y - secondLineStart.y;
     
     // 夹角余弦
+    
     double cos = (a1 * a2 + b1 * b2) / (sqrt(pow(a1, 2) + pow(b1, 2)) * sqrt(pow(a2, 2) + pow(b2, 2)));
+    
     // 浮点计算结果可能超过1，需要控制
+    
     cos = cos > 1 ? 1 : cos;
     return acos(cos);
 }
