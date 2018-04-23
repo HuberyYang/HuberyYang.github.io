@@ -4,7 +4,7 @@ SEOTitle: HuberyYang的博客 | HuberyYang Blog
 header-img: img/home_head.jpg
 email: yml_hubery@sina.com
 description: "HuberyYang's blog,record of my coding"
-keyword: "HuberyYang Blog, huberyyang, iOS, Swift, Apple, iPhone, Mac, BY Blog"
+keyword: "HuberyYang Blog, huberyyang, iOS, Swift, Apple, iPhone, Mac, developer"
 url: "http://HuberyYang.github.io"          # your host, for absolute URL
 baseurl: ""      # for example, '/blog' if your blog hosted on 'host/blog'
 github_repo: "https://github.com/HuberyYang/HuberyYang.github.io.git" # you code repository
@@ -21,8 +21,7 @@ RSS: false
 #twitter_username:   qiubaiying
 #facebook_username:  baiying.qiu.7
 github_username:    HuberyYang
-# jianshu_username:   1761c2e474c7
-blog.csdn.net_username:      a44496913
+jianshu_username:   1761c2e474c7
 zhihu_username:     yml_hubery
 # weibo_username:     5809782128
 
@@ -99,6 +98,10 @@ service-worker: true
 # Friends
 friends: [
     {
+        title: "CSDN Blog",
+        href: "https://blog.csdn.net/"
+    },
+    {
         title: "码云",
         href: "https://gitee.com/"
     },
@@ -118,9 +121,6 @@ friends: [
         title: "Cocoa China",
         href: "http://www.cocoachina.com/"
     },
-    {
-        title: "CSDN Blog",
-        href: "https://blog.csdn.net/"
-    },
+    
 
 ]
