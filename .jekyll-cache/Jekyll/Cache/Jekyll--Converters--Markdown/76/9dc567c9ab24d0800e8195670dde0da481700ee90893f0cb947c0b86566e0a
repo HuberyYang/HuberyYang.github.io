@@ -1,0 +1,42 @@
+I"�
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>  
+<span class="nt">&lt;html&gt;</span>  
+<span class="nt">&lt;head&gt;</span>  
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>  
+    <span class="nt">&lt;title&gt;</span>超链接<span class="nt">&lt;/title&gt;</span>  
+    <span class="nt">&lt;style&gt;</span>  
+        <span class="nt">a</span><span class="p">{</span>  
+            <span class="c">/*划线*/</span>  
+            <span class="nl">text-decoration</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>  
+        <span class="p">}</span>  
+  
+        <span class="c">/*hover 鼠标在对象上方，出现下划线*/</span>  
+        <span class="nt">a</span><span class="nd">:hover</span><span class="p">{</span>  
+            <span class="nl">text-decoration</span><span class="p">:</span> <span class="nb">underline</span><span class="p">;</span>  
+        <span class="p">}</span>  
+  
+    <span class="nt">&lt;/style&gt;</span>  
+<span class="nt">&lt;/head&gt;</span>  
+<span class="nt">&lt;body&gt;</span>  
+    <span class="c">&lt;!-- 超链接 _blank是空白，打开一个新页面 --&gt;</span>  
+    <span class="c">&lt;!-- _blank   新窗口  
+    _self    本窗口  
+    _parent  顶窗口  
+    窗口名称  窗口名称 --&gt;</span>  
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://wwww.baidu.com"</span> <span class="na">target=</span><span class="s">"_blank"</span><span class="nt">&gt;</span>百度<span class="nt">&lt;/a&gt;</span>  
+  
+    <span class="c">&lt;!-- 图片上添加超链接 --&gt;</span>  
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"http://wwww.baidu.com"</span> <span class="na">target=</span><span class="s">"_blank"</span><span class="nt">&gt;</span>  
+        <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"test.png"</span> <span class="na">alt=</span><span class="s">""</span><span class="nt">&gt;</span>  
+  
+    <span class="nt">&lt;/a&gt;</span>  
+  
+    <span class="c">&lt;!-- href可以直接为文件 --&gt;</span>  
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"html_02.html"</span> <span class="na">target=</span><span class="s">"_blank"</span><span class="nt">&gt;</span>  
+        <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"test.png"</span> <span class="na">alt=</span><span class="s">""</span><span class="nt">&gt;</span>  
+    <span class="nt">&lt;/a&gt;</span>  
+  
+<span class="nt">&lt;/body&gt;</span>  
+<span class="nt">&lt;/html&gt;</span> 
+</code></pre></div></div>
+:ET

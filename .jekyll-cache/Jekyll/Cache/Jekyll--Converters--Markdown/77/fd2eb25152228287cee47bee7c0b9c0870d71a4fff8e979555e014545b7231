@@ -1,0 +1,59 @@
+I"n<p><strong>创建新的分支</strong></p>
+
+<p>1.创建分支需要先进入本地仓库所在目录，如果还没有建立本地目录，可以先从GitHub上将项目拉下来。如果不太清楚如何将项目托管于GitHub上，可以参考这篇文章 <a href="https://www.jianshu.com/p/e19d13f6251c">本地项目托管到github</a>。
+例如我需要将项目的本地仓库放在桌面上，那么先进入桌面所在目录<code class="highlighter-rouge">cd /Users/mac/Desktop </code>,然后将目标项目从GitHub上<code class="highlighter-rouge">clone</code>下来,命令<code class="highlighter-rouge">git clone 'GitHub上项目地址'</code>，如：<code class="highlighter-rouge">git clone git@github.com:HuberyYang/ProjectTest.git</code></p>
+
+<p>2.<code class="highlighter-rouge">cd ProjectTest</code>进入项目目录</p>
+
+<p>3.<code class="highlighter-rouge">git branch -a</code> 查看分支状况</p>
+
+<ul>
+  <li>git branch 查看本地</li>
+  <li>git branch -r 查看远程分支</li>
+  <li>git branch -a 查看本地和远程分支</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜  ProjectTest git:(master) git branch -a
+* master
+  remotes/origin/HEAD -&gt; origin/master
+  remotes/origin/master
+</code></pre></div></div>
+<p>结果显示当前本地和远程都只有一个主分支，<code class="highlighter-rouge">master</code>表示主分支，<code class="highlighter-rouge">*</code>表示当前本地所在分支</p>
+
+<p>4.创建新分支 <code class="highlighter-rouge">git checkout -b &lt;branchName&gt;</code></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜  ProjectTest git:(master) git checkout -b &lt;branchName&gt;
+Switched to a new branch '&lt;branchName&gt;'
+➜  ProjectTest git:(&lt;branchName&gt;) git branch -a
+  master
+* &lt;branchName&gt;
+  remotes/origin/HEAD -&gt; origin/master
+  remotes/origin/master
+</code></pre></div></div>
+<p>从结果得知新分支已经成功创建，并且已经切换到<code class="highlighter-rouge">&lt;branchName&gt;</code>分支</p>
+
+<p>5.如果需要在远程服务器上有一个与本地分支对应的分支，可以把本地分支push到远程，命令<code class="highlighter-rouge">git push origin &lt;branchName&gt;:&lt;branchName&gt;</code>,其中<code class="highlighter-rouge">:</code>前面的是本地分支，后面的是远程分支，两个分支是对应关系，可以不同名(最好同名)</p>
+
+<p>6.在分支上完成修改后进行提交</p>
+<ul>
+  <li><code class="highlighter-rouge">git add -A</code></li>
+  <li><code class="highlighter-rouge">git commit -m'分支操作完毕'</code></li>
+  <li>如果存在远程分支，先更新到远程分支<code class="highlighter-rouge">git push origin &lt;branchName&gt;</code></li>
+</ul>
+
+<p>7.切换到主分支提交更新</p>
+<ul>
+  <li><code class="highlighter-rouge">git checkout master</code></li>
+  <li>分支合并到主分支之前要确保主分支没有未提交的内容,使用<code class="highlighter-rouge">git status</code>查看主分支状态，如有更新，先将更新提交到远程</li>
+  <li><code class="highlighter-rouge">git merge &lt;branchName&gt;</code>合并分支，合并成功后提交更新到远程服务器</li>
+</ul>
+
+<p><strong>分支删除</strong></p>
+
+<ul>
+  <li>删除本地分支:<code class="highlighter-rouge">git branch -D &lt;branchName&gt;</code></li>
+  <li>删除远程分支: <code class="highlighter-rouge">git push origin :&lt;branchName&gt;</code>
+在 git v1.7.0 之后有另一种远程删除方式:
+<code class="highlighter-rouge">git push origin --delete &lt;branchName&gt;</code></li>
+</ul>
+
+:ET

@@ -1,0 +1,117 @@
+I"/0<p>UITextView的PlaceHolder 占位文字的实现方法网上已经有很多了，特别是 <a href="http://www.jianshu.com/u/93131dfba96a">VV木公</a> 的 <a href="http://www.jianshu.com/p/9edb8be75e0b">史上最全的iOS之UITextView实现placeHolder占位文字的N种方法</a> 文章里面总结的很全面，我只是对里面最后一种方法封装了一下，方便以后偷懒 ~ 嘻嘻</p>
+
+<ul>
+  <li>.h 文件</li>
+</ul>
+
+<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="cp">#import &lt;UIKit/UIKit.h&gt;  
+</span>      
+    <span class="k">@interface</span> <span class="nc">UITextView</span> <span class="p">(</span><span class="nl">PlaceHolder</span><span class="p">)</span>  
+      
+    <span class="cm">/** 占位文字 */</span>  
+    <span class="k">@property</span> <span class="p">(</span><span class="n">copy</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">placeHoldString</span><span class="p">;</span>  
+      
+    <span class="cm">/** 占位文字颜色 */</span>  
+    <span class="k">@property</span> <span class="p">(</span><span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">UIColor</span> <span class="o">*</span><span class="n">placeHoldColor</span><span class="p">;</span>  
+      
+    <span class="cm">/** 占位文字字体 */</span>  
+    <span class="k">@property</span> <span class="p">(</span><span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">UIFont</span> <span class="o">*</span><span class="n">placeHoldFont</span><span class="p">;</span>  
+      
+    <span class="k">@end</span>  
+</code></pre></div></div>
+
+<ul>
+  <li>.m文件</li>
+</ul>
+
+<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#import "UITextView+PlaceHolder.h"  
+</span>
+<span class="cp">#import &lt;objc/runtime.h&gt;  
+</span>  
+  
+<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">placeHoldLabelKey</span> <span class="o">=</span> <span class="s">@"placeHoldLabelKey"</span><span class="p">;</span>  
+<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">placeHoldStringKey</span> <span class="o">=</span> <span class="s">@"placeHoldStringKey"</span><span class="p">;</span>  
+<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">placeHoldColorKey</span> <span class="o">=</span> <span class="s">@"placeHoldColorKey"</span><span class="p">;</span>  
+<span class="k">static</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">placeHoldFontKey</span> <span class="o">=</span> <span class="s">@"placeHoldFontKey"</span><span class="p">;</span>  
+  
+<span class="k">@interface</span> <span class="nc">UITextView</span><span class="p">()</span>  
+  
+<span class="k">@property</span> <span class="p">(</span><span class="n">strong</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">UILabel</span> <span class="o">*</span><span class="n">placeLabel</span><span class="p">;</span>  
+  
+<span class="k">@end</span>  
+  
+  
+<span class="k">@implementation</span> <span class="nc">UITextView</span> <span class="p">(</span><span class="nl">PlaceHolder</span><span class="p">)</span>  
+  
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setPlaceLabel</span><span class="p">:(</span><span class="n">UILabel</span> <span class="o">*</span><span class="p">)</span><span class="nv">placeLabel</span><span class="p">{</span>  
+    <span class="n">objc_setAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">placeHoldLabelKey</span><span class="p">,</span> <span class="n">placeLabel</span><span class="p">,</span> <span class="n">OBJC_ASSOCIATION_RETAIN</span><span class="p">);</span>  
+<span class="p">}</span>  
+  
+<span class="k">-</span> <span class="p">(</span><span class="n">UILabel</span> <span class="o">*</span><span class="p">)</span><span class="n">placeLabel</span><span class="p">{</span>  
+    <span class="k">return</span> <span class="n">objc_getAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">placeHoldLabelKey</span><span class="p">);</span>  
+<span class="p">}</span>  
+  
+  
+  
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setPlaceHoldString</span><span class="p">:(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">placeHoldString</span><span class="p">{</span>  
+      
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">self</span><span class="p">.</span><span class="n">placeLabel</span><span class="p">)</span> <span class="p">{</span>  
+          
+        <span class="n">self</span><span class="p">.</span><span class="n">placeLabel</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nf">setupCustomPlaceHoldLabel</span><span class="p">];</span>  
+    <span class="p">}</span>  
+      
+    <span class="n">self</span><span class="p">.</span><span class="n">placeLabel</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">placeHoldString</span><span class="p">;</span>  
+    <span class="n">objc_setAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">placeHoldStringKey</span><span class="p">,</span> <span class="n">placeHoldString</span><span class="p">,</span> <span class="n">OBJC_ASSOCIATION_COPY</span><span class="p">);</span>  
+<span class="p">}</span>  
+  
+<span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">placeHoldString</span><span class="p">{</span>  
+    <span class="k">return</span> <span class="n">objc_getAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">placeHoldStringKey</span><span class="p">);</span>  
+<span class="p">}</span>  
+  
+  
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setPlaceHoldColor</span><span class="p">:(</span><span class="n">UIColor</span> <span class="o">*</span><span class="p">)</span><span class="nv">placeHoldColor</span><span class="p">{</span>  
+      
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">self</span><span class="p">.</span><span class="n">placeLabel</span><span class="p">)</span> <span class="p">{</span>  
+          
+        <span class="n">self</span><span class="p">.</span><span class="n">placeLabel</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nf">setupCustomPlaceHoldLabel</span><span class="p">];</span>  
+    <span class="p">}</span>  
+      
+    <span class="n">self</span><span class="p">.</span><span class="n">placeLabel</span><span class="p">.</span><span class="n">textColor</span> <span class="o">=</span> <span class="n">placeHoldColor</span><span class="p">;</span>  
+    <span class="n">objc_setAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">placeHoldColorKey</span><span class="p">,</span> <span class="n">placeHoldColor</span><span class="p">,</span> <span class="n">OBJC_ASSOCIATION_RETAIN</span><span class="p">);</span>  
+<span class="p">}</span>  
+  
+<span class="k">-</span> <span class="p">(</span><span class="n">UIColor</span> <span class="o">*</span><span class="p">)</span><span class="n">placeHoldColor</span><span class="p">{</span>  
+    <span class="k">return</span> <span class="n">objc_getAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">placeHoldColorKey</span><span class="p">);</span>  
+<span class="p">}</span>  
+  
+  
+  
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setPlaceHoldFont</span><span class="p">:(</span><span class="n">UIFont</span> <span class="o">*</span><span class="p">)</span><span class="nv">placeHoldFont</span><span class="p">{</span>  
+      
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">self</span><span class="p">.</span><span class="n">placeLabel</span><span class="p">)</span> <span class="p">{</span>  
+        <span class="n">self</span><span class="p">.</span><span class="n">placeLabel</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nf">setupCustomPlaceHoldLabel</span><span class="p">];</span>  
+    <span class="p">}</span>  
+      
+    <span class="n">self</span><span class="p">.</span><span class="n">placeLabel</span><span class="p">.</span><span class="n">font</span> <span class="o">=</span> <span class="n">placeHoldFont</span><span class="p">;</span>  
+    <span class="n">objc_setAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">placeHoldFontKey</span><span class="p">,</span> <span class="n">placeHoldFont</span><span class="p">,</span> <span class="n">OBJC_ASSOCIATION_RETAIN</span><span class="p">);</span>  
+<span class="p">}</span>  
+  
+<span class="k">-</span> <span class="p">(</span><span class="n">UIFont</span> <span class="o">*</span><span class="p">)</span><span class="n">placeHoldFont</span><span class="p">{</span>  
+    <span class="k">return</span> <span class="n">objc_getAssociatedObject</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">placeHoldFontKey</span><span class="p">);</span>  
+<span class="p">}</span>  
+  
+  
+<span class="k">-</span> <span class="p">(</span><span class="n">UILabel</span> <span class="o">*</span><span class="p">)</span><span class="n">setupCustomPlaceHoldLabel</span><span class="p">{</span>  
+  
+    <span class="n">UILabel</span> <span class="o">*</span><span class="n">label</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UILabel</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">init</span><span class="p">];</span>  
+    <span class="n">label</span><span class="p">.</span><span class="n">numberOfLines</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  
+    <span class="n">label</span><span class="p">.</span><span class="n">textColor</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIColor</span> <span class="nf">lightGrayColor</span><span class="p">];</span>  
+    <span class="n">label</span><span class="p">.</span><span class="n">font</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">font</span><span class="p">;</span>  
+    <span class="p">[</span><span class="n">label</span> <span class="nf">sizeToFit</span><span class="p">];</span>  
+    <span class="p">[</span><span class="n">self</span> <span class="nf">addSubview</span><span class="p">:</span><span class="n">label</span><span class="p">];</span>  
+    <span class="p">[</span><span class="n">self</span> <span class="nf">setValue</span><span class="p">:</span><span class="n">label</span> <span class="nf">forKey</span><span class="p">:</span><span class="s">@"_placeholderLabel"</span><span class="p">];</span>  
+      
+    <span class="k">return</span> <span class="n">label</span><span class="p">;</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+:ET

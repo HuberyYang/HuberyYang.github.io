@@ -1,0 +1,24 @@
+I"�<p>有时在使用 UILabel 时需要调整行间距，使用<code class="highlighter-rouge">NSMutableAttributedString</code>可以满足这一需求</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>UILabel *label = [[UILabel alloc] init];  
+label.font = Font(13);  
+label.numberOfLines = 0;  
+label.backgroundColor = [UIColor whiteColor];  
+label.textColor = LITTLE_TEXT_COLOR;  
+NSString *contentStr = @"内容够长才能换行呀，内容够长才能换行呀，内容够长才能换行呀，内容够长才能换行呀，内容够长才能换行呀，内容够长才能换行呀，内容够长才能换行呀，内容够长才能换行呀，内容够长才能换行呀，内容够长才能换行呀，内容够长才能换行呀";  
+          
+NSMutableAttributedString *attContentStr = [[NSMutableAttributedString alloc] initWithString:contentStr];  
+NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];  
+[paragraphStyle setLineSpacing:5];  
+[attContentStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [contentStr length])];  
+label.attributedText = attContentStr;  
+[label sizeToFit];  
+          
+[scrollView addSubview:label];  
+[label mas_makeConstraints:^(MASConstraintMaker *make) {  
+    make.top.equalTo(scrollView.mas_top).offset(15);  
+    make.left.equalTo(scrollView.mas_left).offset(15);  
+    make.width.mas_offset(SCREEN_WIDTH - 30);          
+}];  
+</code></pre></div></div>
+:ET

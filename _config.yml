@@ -38,7 +38,7 @@ anchorjs: true                          # if you want to customize anchor. check
 
 # Gems
 # from PR#40, to support local preview for Jekyll 3.0
-gems: [jekyll-paginate]
+plugins: [jekyll-paginate]
 
 
 
@@ -50,7 +50,7 @@ gems: [jekyll-paginate]
 markdown: kramdown
 highlighter: rouge
 kramdown:
-  input: GFM                            # use Github Flavored Markdown !important
+input: GFM                            # use Github Flavored Markdown !important
 
 
 
@@ -85,7 +85,7 @@ ga_domain: huberyyang.com                # 默认的是 auto, 这里我是自定
 
 # Featured Tags
 featured-tags: true                     # 是否使用首页标签
-featured-condition-size: 1              # 相同标签数量大于这个数，才会出现在首页
+featured-condition-size: 5              # 相同标签数量大于这个数，才会出现在首页
 
 
 
@@ -100,10 +100,6 @@ friends: [
     {
         title: "CSDN Blog",
         href: "https://blog.csdn.net/"
-    },
-    {
-        title: "码云",
-        href: "https://gitee.com/"
     },
     {
         title: "简书·Hubery_Yml",

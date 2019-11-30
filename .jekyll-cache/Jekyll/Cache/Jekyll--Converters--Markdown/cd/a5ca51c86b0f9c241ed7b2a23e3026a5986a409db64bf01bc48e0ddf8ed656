@@ -1,0 +1,245 @@
+I"�_<blockquote>
+  <p>走势图是彩票中综合多期开奖结果得出每个投注号码的遗漏值、出现次数、平均遗漏、最大遗漏等值然后展示的表格视图。这里只做了双色球蓝球的走势图，其它彩种的走势图与此类似。</p>
+</blockquote>
+
+<p>先看效果图：</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/2475558-467c214ecafb2d2c.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="trend.gif" /></p>
+
+<p><strong>布局</strong></p>
+
+<p>布局分三部分：</p>
+
+<ol>
+  <li>
+    <p>顶部号码区 – 使用<code class="highlighter-rouge">UIScrollView</code></p>
+  </li>
+  <li>
+    <p>左侧期号区 – 使用<code class="highlighter-rouge">UITableView</code></p>
+  </li>
+  <li>
+    <p>右侧号码区 – 使用<code class="highlighter-rouge">UICollectionView</code></p>
+  </li>
+</ol>
+
+<p><strong>分步处理</strong></p>
+
+<ul>
+  <li>滑动时需要使三大块在 x/y 轴偏移量保持一致
+可以在 <code class="highlighter-rouge">scrollViewDidScroll</code> 中进行控制</li>
+</ul>
+
+<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">scrollViewDidScroll</span><span class="p">:(</span><span class="n">UIScrollView</span> <span class="o">*</span><span class="p">)</span><span class="nv">scrollView</span><span class="p">{</span>
+    <span class="n">CGPoint</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">scrollView</span><span class="p">.</span><span class="n">contentOffset</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">scrollView</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">issueList</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 左</span>
+    
+        <span class="n">self</span><span class="p">.</span><span class="n">numberList</span><span class="p">.</span><span class="n">contentOffset</span> <span class="o">=</span> <span class="n">CGPointMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">numberList</span><span class="p">.</span><span class="n">contentOffset</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">offset</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">scrollView</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">numberList</span><span class="p">){</span> <span class="c1">// 右</span>
+    
+        <span class="n">self</span><span class="p">.</span><span class="n">issueList</span><span class="p">.</span><span class="n">contentOffset</span> <span class="o">=</span> <span class="n">CGPointMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">issueList</span><span class="p">.</span><span class="n">contentOffset</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">offset</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">ballsPagView</span><span class="p">.</span><span class="n">contentOffset</span> <span class="o">=</span> <span class="n">CGPointMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">numberList</span><span class="p">.</span><span class="n">contentOffset</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">ballsPagView</span><span class="p">.</span><span class="n">contentOffset</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">scrollView</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">ballsPagView</span><span class="p">){</span> <span class="c1">// 上</span>
+    
+        <span class="n">self</span><span class="p">.</span><span class="n">numberList</span><span class="p">.</span><span class="n">contentOffset</span> <span class="o">=</span> <span class="n">CGPointMake</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">ballsPagView</span><span class="p">.</span><span class="n">contentOffset</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">numberList</span><span class="p">.</span><span class="n">contentOffset</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<ul>
+  <li>右侧号码区布局
+右侧 <code class="highlighter-rouge">UICollectionView</code> 的 <code class="highlighter-rouge">contentSize</code> 已经超出了默认布局的范围，二位默认布局也不到达到图示中双向滑动的效果，所以这里使用 <code class="highlighter-rouge">layout </code>自定义布局。
+创建继承自<code class="highlighter-rouge">UICollectionViewLayout</code>的<code class="highlighter-rouge">SSQTrendLayout</code>类进行自定义布局。</li>
+</ul>
+
+<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#import "SSQTrendLayout.h"
+</span>
+<span class="k">@implementation</span> <span class="nc">SSQTrendLayout</span><span class="p">{</span>
+    
+    <span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">_attributes</span><span class="p">;</span>
+    <span class="n">NSInteger</span> <span class="n">_itemCount</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">prepareLayout</span><span class="p">{</span>
+    <span class="p">[</span><span class="n">super</span> <span class="nf">prepareLayout</span><span class="p">];</span>
+    
+    <span class="n">_itemCount</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">collectionView</span> <span class="nf">numberOfSections</span><span class="p">];</span>
+    <span class="n">_attributes</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableArray</span> <span class="nf">array</span><span class="p">];</span>
+    
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="n">_itemCount</span><span class="p">;</span> <span class="n">index</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">NSInteger</span> <span class="n">pSec</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">collectionView</span> <span class="nf">numberOfItemsInSection</span><span class="p">:</span><span class="n">index</span><span class="p">];</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">pSec</span><span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            
+            <span class="n">NSIndexPath</span> <span class="o">*</span><span class="n">indexPath</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSIndexPath</span> <span class="nf">indexPathForItem</span><span class="p">:</span><span class="n">i</span> <span class="nf">inSection</span><span class="p">:</span><span class="n">index</span><span class="p">];</span>
+            <span class="n">UICollectionViewLayoutAttributes</span> <span class="o">*</span><span class="n">pAttri</span> <span class="o">=</span> <span class="p">[</span><span class="n">UICollectionViewLayoutAttributes</span> <span class="nf">layoutAttributesForCellWithIndexPath</span><span class="p">:</span><span class="n">indexPath</span><span class="p">];</span>
+            
+            <span class="n">CGFloat</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="n">CGFloat</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            
+            <span class="c1">// 每个item的宽高</span>
+            
+            <span class="n">x</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">kItemSize</span><span class="p">.</span><span class="n">width</span><span class="p">);</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">index</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">kItemSize</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+            <span class="n">pAttri</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">kItemSize</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">kItemSize</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+            
+            <span class="p">[</span><span class="n">_attributes</span> <span class="nf">addObject</span><span class="p">:</span><span class="n">pAttri</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span> 
+<span class="p">}</span>
+
+<span class="c1">// 设置内容区域的大小</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">CGSize</span><span class="p">)</span><span class="n">collectionViewContentSize</span><span class="p">{</span>
+
+    <span class="c1">// sections</span>
+    
+    <span class="n">NSInteger</span> <span class="n">sec</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">collectionView</span> <span class="nf">numberOfSections</span><span class="p">];</span>
+    <span class="k">return</span> <span class="n">CGSizeMake</span><span class="p">((</span><span class="n">self</span><span class="p">.</span><span class="n">cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">cols</span> <span class="o">*</span> <span class="n">kItemSize</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">sec</span> <span class="o">*</span> <span class="p">(</span><span class="n">kItemSize</span><span class="p">.</span><span class="n">height</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">NSArray</span><span class="o">&lt;</span><span class="n">UICollectionViewLayoutAttributes</span> <span class="o">*&gt;</span> <span class="o">*</span><span class="p">)</span><span class="nf">layoutAttributesForElementsInRect</span><span class="p">:(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">rect</span><span class="p">{</span>
+    <span class="k">return</span> <span class="n">_attributes</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>右侧号码区cell处理</p>
+
+    <blockquote>
+      <p>通常文本的显示用<code class="highlighter-rouge">UILabel</code>就可以了，但这里由于页面内cell数量众多，并且部分cell上还需要圆形背景，使用<code class="highlighter-rouge">UILabel</code>会造成明显的卡顿，这里直接在cell上绘制所需的背景和文字。</p>
+    </blockquote>
+  </li>
+</ul>
+
+<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">drawRect</span><span class="p">:(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">rect</span><span class="p">{</span>
+    
+    <span class="c1">// 创建画布</span>
+    
+    <span class="n">CGContextRef</span> <span class="n">context</span> <span class="o">=</span> <span class="n">UIGraphicsGetCurrentContext</span><span class="p">();</span>
+    
+    <span class="c1">// 设置填充色</span>
+    
+    <span class="n">CGContextSetFillColorWithColor</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">bgColor</span><span class="p">.</span><span class="n">CGColor</span><span class="p">);</span>
+    
+    <span class="c1">// 圆形直径</span>
+    
+    <span class="n">CGFloat</span> <span class="n">w</span> <span class="o">=</span> <span class="n">MIN</span><span class="p">(</span><span class="n">kItemSize</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">kItemSize</span><span class="p">.</span><span class="n">height</span><span class="p">)</span> <span class="o">-</span> <span class="mi">4</span><span class="p">;</span>
+    
+    <span class="c1">// 园点坐标</span>
+    
+    <span class="n">CGPoint</span> <span class="n">center</span> <span class="o">=</span> <span class="n">CGPointMake</span><span class="p">(</span><span class="n">rect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">rect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span>
+                                 <span class="n">rect</span><span class="p">.</span><span class="n">origin</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">rect</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">shapeType</span> <span class="o">==</span> <span class="n">ShapeWithBackgroundViewRound</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 圆形背景</span>
+        
+        <span class="n">CGContextAddArc</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">center</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">center</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">M_PI</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">CGContextDrawPath</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">kCGPathFill</span><span class="p">);</span>
+        <span class="p">[</span><span class="n">self</span> <span class="nf">drawShowText</span><span class="p">];</span>
+    <span class="p">}</span><span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">shapeType</span> <span class="o">==</span> <span class="n">ShapeWithNoBackgroundView</span><span class="p">){</span> <span class="c1">// 无背景</span>
+    
+        <span class="p">[</span><span class="n">self</span> <span class="nf">drawShowText</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 绘制文字</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">drawShowText</span><span class="p">{</span>
+    
+    <span class="n">UIFont</span> <span class="o">*</span><span class="n">font</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIFont</span> <span class="nf">systemFontOfSize</span><span class="p">:</span><span class="mi">12</span><span class="p">];</span>
+    <span class="n">CGSize</span> <span class="n">textSize</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">number</span> <span class="nf">sizeWithAttributes</span><span class="p">:@{</span><span class="n">NSFontAttributeName</span><span class="o">:</span><span class="n">font</span><span class="p">}];</span>
+    <span class="n">CGRect</span> <span class="n">textRect</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">((</span><span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">-</span> <span class="n">textSize</span><span class="p">.</span><span class="n">width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">-</span> <span class="n">textSize</span><span class="p">.</span><span class="n">height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+    <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">number</span> <span class="nf">drawInRect</span><span class="p">:</span><span class="n">textRect</span> <span class="nf">withAttributes</span><span class="p">:@{</span><span class="n">NSFontAttributeName</span><span class="o">:</span><span class="n">font</span><span class="p">,</span><span class="n">NSForegroundColorAttributeName</span><span class="o">:</span><span class="n">self</span><span class="p">.</span><span class="n">textColor</span><span class="p">}];</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>考虑到cell的重用特性，需要在<code class="highlighter-rouge">UICollectionView</code>代理方法获取cell时重新绘制:</p>
+
+<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">cell</span> <span class="nf">setNeedsDisplay</span><span class="p">];</span>
+<span class="k">return</span> <span class="n">cell</span><span class="p">;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>开奖号码连接线</li>
+</ul>
+
+<p>开奖号码连接线需要直接添加于<code class="highlighter-rouge">UICollectionView</code>的layer图层上，以保证线段与列表cell相对位置的正确,而线段可以采用 <code class="highlighter-rouge">UIBezierPath</code>与<code class="highlighter-rouge">CAShapeLayer</code> 结合的方式绘制。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 绘制折线
+- (void)drawBrokenLines{
+    
+    // 计算线段开始点与结束点
+    NSMutableArray &lt;TrendPerBall *&gt; *ballsPoints = [NSMutableArray array];
+    for (int sec = 0; sec &lt; self.listSource.count; sec ++) {
+        SSQTrendModel *tm = self.listSource[sec];
+        NSArray *showBalls = tm.trends.lastObject;
+        for (int row = 0; row &lt; showBalls.count; row ++) {
+            
+            TrendPerBall *pb = showBalls[row];
+            CGFloat x = 0;
+            CGFloat y = 0;
+            
+            // 每个item的宽高，需要与layout中item的frame保持一致
+            x = row * (1 + kItemSize.width);
+            y = 1 + sec * (1 + kItemSize.height);
+            CGRect pFrame = CGRectMake(x, y, kItemSize.width, kItemSize.height);
+            CGPoint pCenter = CGPointMake(pFrame.origin.x + pFrame.size.width / 2.0,
+                                          pFrame.origin.y + pFrame.size.height / 2.0);
+            
+            pb.realRect = pFrame;
+            pb.center = pCenter;
+            
+            if (pb.isAwardNumber) {
+                [ballsPoints addObject:pb];
+            }
+        }
+    }
+    
+    // 节点圆形半径
+    CGFloat r = (MIN(kItemSize.width, kItemSize.height) - 4) / 2.0;
+    // 计算绘制线段的开始点和结束点
+    for (int index = 0; index &lt; ballsPoints.count - 1; index ++) {
+        
+        TrendPerBall *fm = ballsPoints[index];
+        TrendPerBall *tm = ballsPoints[index + 1];
+        // 节点间距
+        CGFloat dis = sqrt(pow(tm.center.x - fm.center.x, 2.0) + pow(tm.center.y - fm.center.y, 2.0));
+        if (tm.center.x &lt;= fm.center.x) { // 下个节点位于第上个节点左侧
+            
+            fm.startPoint = CGPointMake(fm.center.x - r * ((fm.center.x - tm.center.x) / dis),
+                                        fm.center.y + r * ((tm.center.y - fm.center.y) / dis));
+            
+            tm.endPoint   = CGPointMake(tm.center.x + r * ((fm.center.x - tm.center.x) / dis),
+                                        tm.center.y - r * ((tm.center.y - fm.center.y) / dis));
+            
+        }else{ // 下个节点位于第上个节点右侧
+            
+            fm.startPoint = CGPointMake(fm.center.x + r * ((tm.center.x - fm.center.x) / dis),
+                                        fm.center.y + r * ((tm.center.y - fm.center.y) / dis));
+            
+            tm.endPoint   = CGPointMake(tm.center.x - r * ((tm.center.x - fm.center.x) / dis),
+                                        tm.center.y - r * ((tm.center.y - fm.center.y) / dis));
+        }
+        
+        UIBezierPath *path = [[UIBezierPath alloc] init];
+        [path moveToPoint:fm.startPoint];
+        [path addLineToPoint:tm.endPoint];
+        
+        CAShapeLayer *layer = [CAShapeLayer layer];
+        layer.path = path.CGPath;
+        layer.strokeColor = kBLUE_COLOR.CGColor;
+        layer.fillColor = [UIColor clearColor].CGColor;
+        layer.lineWidth = 1;
+        layer.lineCap = kCALineJoinRound;
+        layer.lineJoin = kCALineJoinRound;
+        
+        [self.numberList.layer addSublayer:layer];
+    }
+}
+</code></pre></div></div>
+
+<p>以上即为走势图中较重要的部分，完整的Demo地址：<a href="https://github.com/HuberyYang/LotteryTrend.git">LotteryTrend</a>
+如果本篇文章能帮到您，请您随手丢个star</p>
+
+:ET

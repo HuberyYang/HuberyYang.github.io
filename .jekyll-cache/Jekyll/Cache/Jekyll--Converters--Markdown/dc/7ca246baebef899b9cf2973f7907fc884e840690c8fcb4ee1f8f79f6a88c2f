@@ -1,0 +1,207 @@
+I"�<p><strong>一、概念</strong></p>
+
+<p>什么是组合数呢？</p>
+
+<blockquote>
+  <p>从m个不同元素中取出n（n≤m）个元素的所有组合的个数，叫做从m个不同元素中取出n个元素的组合数（Combination）。</p>
+</blockquote>
+
+<p>组合数基本公式为：
+<img src="http://upload-images.jianshu.io/upload_images/2475558-a2c5ba01a847e519.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" /></p>
+
+<p>线性写法为：c(m,n) = m!/((m-n)!*n!)</p>
+
+<p>现实生活中彩票的概率计算就涉及到组合数，比如双色球中红球选择需要从 <code class="highlighter-rouge">01~33</code> 红球中选出6个，组合结果为 c(33,6) = 1107568.</p>
+
+<p><strong>二、计算方式</strong></p>
+
+<blockquote>
+  <p>由于计算机数据存储方式的限制，阶乘的计算，如果是long int型只能正确计算到12左右的阶乘，如果用double型只能正确计算170左右的阶乘，当然这些只是大概，需要结合实际平台进行验证。</p>
+</blockquote>
+
+<p>所以采用阶乘计算稍大数组合数是不合适的，而且效率不高，但是可以先对公式进行转换然后再进行计算：
+<strong>1.对公式两边取自然对数</strong></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/2475558-a800e7d9bea07740.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" /></p>
+
+<p><strong>2.根据对数性质进行转换</strong></p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/2475558-576a246a59455baa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" /></p>
+
+<ul>
+  <li>
+    <p>由于
+<img src="http://upload-images.jianshu.io/upload_images/2475558-14dada8828552c4c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" /></p>
+  </li>
+  <li>
+    <p>消除相同项</p>
+  </li>
+</ul>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/2475558-cd4aabbfde8e8344.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" /></p>
+
+<ul>
+  <li>到这就已经将阶乘转换成对数连加，极大的降低了运算的复杂度。另外，依据组合数性质：</li>
+</ul>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/2475558-5cf3a8040bf13892.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" /></p>
+
+<p>当 n &gt; m/2 时，n 相对于 m - n 是一个较大的数，此时可以取 n = m - n进行计算。</p>
+
+<p><strong>3.进行计算</strong>
+以第2步得到的公式计算出</p>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/2475558-b30e33e52cf70ad7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="" /></p>
+
+<p>的值，然后再取反对数就可以得到组合数结果了。</p>
+
+<p>用这种方法计算组合数，如果只计算ln(C(m,n))的话，n可以取到整型数据的极限值65535，ln(C(65535,32767)) = 45419.6</p>
+
+<p>而计算时间可以达到毫秒级。当然，如果要取反对数得到最终的组合数的话，m的取值就不能达到这么大了，但是这种算法仍然可以保证m取到1000以上。</p>
+
+<p><strong>4.该算法OC实现代码</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/**
+ 组合数计算
+
+ @param totalNum C(m,n) 中 m
+ @param requireNum C(m,n) 中 n
+ @return 组合数结果
+ */
++ (NSInteger)selectFromTotalNum:(NSInteger)totalNum requireNum:(NSInteger)requireNum{
+
+    if (totalNum &lt; requireNum) {
+        return 0;
+    }
+
+    if (requireNum &lt; totalNum / 2.0) {
+        requireNum = totalNum - requireNum;
+    }
+
+    double s1 = 0;
+    for (NSInteger i = requireNum + 1; i &lt;= totalNum; i ++) {
+
+        s1 += log((double)i);
+
+    }
+
+    double s2 = 0;
+    NSInteger ub = totalNum - requireNum;
+
+    for (int i = 1; i &lt;= ub; i++) {
+
+        s2 += log((double)i);
+    }
+
+    double result = exp(s1 - s2);
+
+    //此处需要先进行四舍五入，不能直接强行取整，不然可能会有 1 的误差值
+    double temp = round(result); //四舍五入
+
+    return (NSInteger)temp;
+}
+</code></pre></div></div>
+
+<p><strong>三、获取所有的可能组合</strong></p>
+
+<blockquote>
+  <p>所有的可能性组合可以通过排列组合获得，该方式计算耗时长、资源占用严重，在iPhone6上测试仅 C(33,16) 的计算就需 12s左右的时间，内存和cpu更是爆满，但是当 m &lt;= 10 时 还是可以接受的，所以该方法具有很大的局限性。</p>
+</blockquote>
+
+<ul>
+  <li>
+    <p>方法原理
+从包含m个元素的数组中不计顺序的选出n个元素，
+思路是创建一个数组，下标表示1到m个数，数组元素的值为1表示其下标代表的数被选中，为0则没选中。
+首先初始化，将数组前n个元素置1，表示第一个组合为前n个数。
+然后遍历数组元素值的 1、0 组合，找到第一个 1、0 组合后将其变为 0、1 组合，
+同时将其左边的所有“1”全部移动到数组的最左端。
+当第一个“1”移动到数组的m-n的位置，即n个“1”全部移动到最右端时，就得到了最后一个组合。</p>
+
+    <p>例如求5中选3的组合：</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   1    1    1    0    0    // 1,2,3  
+   1    1    0    1    0    // 1,2,4 
+   1    0    1    1    0    // 1,3,4 
+   0    1    1    1    0    // 2,3,4  
+   1    1    0    0    1    // 1,2,5    
+   1    0    1    0    1    // 1,3,5     
+   0    1    1    0    1    // 2,3,5    
+   1    0    0    1    1    // 1,4,5     
+   0    1    0    1    1    // 2,4,5     
+   0    0    1    1    1    // 3,4,5 
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>实现代码(oc)</p>
+  </li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+ (NSArray *)selectFromSource:(NSArray *)source requireNum:(int)requireNum{
+
+    NSMutableArray *results = [NSMutableArray array]; //排列组合结果
+
+    //@1 表示选中，@0 表示未选中
+    NSMutableArray *arr = [NSMutableArray array];
+    NSMutableArray *firstItem = [NSMutableArray array];
+    for (int i = 0; i &lt; source.count; i ++) {
+
+        if (i &lt; requireNum) {
+
+            [arr addObject:@1];
+            [firstItem addObject:source[i]];
+
+        }else{
+            [arr addObject:@0];
+        }
+    }
+
+    //第一种排列组合结果就是选择前 chooseNum 个元素
+    [results addObject:firstItem];
+
+    while (1) {
+
+        for (int index = 0; index &lt; arr.count; index ++)
+        {
+            //排列组合完毕时退出循环
+            NSArray *checkArr = [arr objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, source.count - requireNum)]];
+
+            if (![checkArr containsObject:@1])
+            {
+                return results;
+            }
+
+            if ((index &lt; source.count - 1) &amp;&amp; [arr[index] isEqual:@1] &amp;&amp; [arr[index + 1] isEqual:@0])
+            {
+                [arr exchangeObjectAtIndex:index withObjectAtIndex:index + 1];
+
+                NSMutableArray *tempArr = [NSMutableArray arrayWithArray:[arr objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, index)]]];
+
+                //将index左侧元素拿出来，并将其中所有的 1 移至左侧，这里可以使用系统的排序方法
+                [tempArr sortUsingComparator:^NSComparisonResult(NSNumber * obj1, NSNumber * obj2) {
+                    return [obj1 intValue] &lt; [obj2 intValue];
+                }];
+
+                //替换arr中 index 左侧元素
+                [arr replaceObjectsInRange:NSMakeRange(0, index) withObjectsFromArray:tempArr];
+
+                //将已选择的元素挑选出来保存
+                NSMutableArray *selectedArr = [NSMutableArray array];
+                for (int j = 0; j &lt; arr.count; j ++)
+                {
+                    if ([arr[j] isEqual:@1]) {
+                        [selectedArr addObject:source[j]];
+                    }
+                }
+
+                [results addObject:[selectedArr mutableCopy]];
+
+                break;
+            }
+
+        }
+
+    }
+}
+</code></pre></div></div>
+:ET

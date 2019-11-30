@@ -1,0 +1,572 @@
+I"�P<p>最近项目做到用户自定义头像功能模块，然后仿照微信做了一个，功能包括照片拍摄和图片裁剪。</p>
+
+<p><strong>使用相机拍照</strong></p>
+<ul>
+  <li>
+    <p>导入需要的框架</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  #import &lt;AVFoundation/AVFoundation.h&gt; 
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>创建相机</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      /** 捕获设备，通常是前置摄像头，后置摄像头，麦克风（音频输入） */  
+      @property (strong, nonatomic) AVCaptureDevice *device;  
+	      
+      /** 代表输入设备，使用AVCaptureDevice初始化 */  
+      @property (strong, nonatomic) AVCaptureDeviceInput *input;  
+	      
+      /** 输出图片 */  
+      @property (strong, nonatomic) AVCaptureStillImageOutput *imageOutput;  
+	      
+      /** 由他将输入输出结合在一起，并开始启动捕获设备（摄像头） */  
+      @property (strong, nonatomic) AVCaptureSession *session;  
+	      
+      /** 图像预览层，实时显示捕获的图像 */  
+      @property (strong, nonatomic) AVCaptureVideoPreviewLayer *previewLayer;  
+	
+      /* 创建相机 */
+      - (void)createCameraDistrict{  
+	          
+          //获取后置摄像头  
+	        
+          self.device = [self camerWithPosition:AVCaptureDevicePositionBack];  
+          self.input = [[AVCaptureDeviceInput alloc] initWithDevice:self.device error:nil];  
+	          
+          self.imageOutput = [[AVCaptureStillImageOutput alloc] init];  
+          self.session = [[AVCaptureSession alloc] init];  
+	          
+          //设置获取图片的质量  
+	        
+          self.session.sessionPreset = AVCaptureSessionPresetPhoto;  
+	          
+          //添加输入输出  
+	        
+          if ([self.session canAddInput:self.input]) {  
+              [self.session addInput:self.input];  
+          }  
+	          
+          if ([self.session canAddOutput:self.imageOutput]) {  
+              [self.session addOutput:self.imageOutput];  
+          }  
+	          
+          //生成预览层  
+	        
+          self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];  
+          self.previewLayer.frame = CGRectMake(0, 35, SCREEN_WIDTH, SCREEN_HEIGHT - self.bottomView.size.height - 35);  
+          self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;  
+          self.previewLayer.backgroundColor = [UIColor blackColor].CGColor;  
+          [self.view.layer addSublayer:self.previewLayer];  
+	          
+          if ([_device lockForConfiguration:nil]) {  
+	              
+              //自动闪光灯  
+	            
+              if ([_device isFlashModeSupported:AVCaptureFlashModeAuto]) {  
+                  [_device setFlashMode:AVCaptureFlashModeAuto];  
+              }  
+	              
+              //自动白平衡  
+	            
+              if ([_device isWhiteBalanceModeSupported:AVCaptureWhiteBalanceModeAutoWhiteBalance]) {  
+                  [_device setWhiteBalanceMode:AVCaptureWhiteBalanceModeAutoWhiteBalance];  
+              }  
+	              
+              [_device unlockForConfiguration];  
+          }  
+	          
+          //开始取景  
+	        
+          [self.session startRunning];  
+      }  
+	
+      //根据前后置位置获取相应的摄像头  
+	    
+      - (AVCaptureDevice *)camerWithPosition:(AVCaptureDevicePosition)position{  
+	      
+          NSArray *devices = [AVCaptureDevice     devicesWithMediaType:AVMediaTypeVideo];  
+          for (AVCaptureDevice *device in devices) {  
+              if (device.position == position) {  
+                  return device;  
+              }  
+          }  
+	      
+          return nil;  
+      } 
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>闪光灯设置</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      // 设置闪光灯状态为打开  
+      [self.device lockForConfiguration:nil];  
+      if ([self.device hasFlash]) {  
+          if ([_device isFlashModeSupported:AVCaptureFlashModeOn]) {  
+              [_device setFlashMode:AVCaptureFlashModeOn];  
+          }  
+      }  
+      [self.device unlockForConfiguration]; 
+	
+	
+      // 设置闪光灯状态为关闭  
+      [self.device lockForConfiguration:nil];  
+      if ([self.device hasFlash]) {  
+           if ([_device isFlashModeSupported:AVCaptureFlashModeOff]) {  
+               [_device setFlashMode:AVCaptureFlashModeOff];  
+           }  
+      }  
+      [self.device unlockForConfiguration];  
+	
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>前后摄像头切换</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> - (IBAction)switchCameraButtonClicked:(id)sender {  
+	      
+     [self changeCamera];  
+	      
+     //延迟一秒设置相机初始焦点  
+     __weak typeof(self) weakSelf = self;  
+     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));  
+     dispatch_after(delayTime, dispatch_get_main_queue(), ^{  
+         [weakSelf setupFocusPointManual]; //设置初始焦点居中  
+     });  
+	      
+ }  
+	
+ - (void)changeCamera{  
+	          
+      NSUInteger cameraCount = [[AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo] count];  
+	          
+      if (cameraCount &gt; 1) {  
+	              
+          NSError *error;  
+          //给摄像头的切换添加翻转动画  
+          CATransition *animation = [CATransition animation];  
+          animation.duration = 0.5f;  
+          animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];  
+          animation.type = @"oglFlip";  
+          animation.subtype = kCATransitionFromLeft;  
+	              
+          AVCaptureDevice *newCamera = nil;  
+          AVCaptureDeviceInput *newInput = nil;  
+          //拿到另外一个摄像头位置  
+          AVCaptureDevicePosition position = [[_input device] position];  
+	              
+          if (position == AVCaptureDevicePositionFront){  
+              newCamera = [self camerWithPosition:AVCaptureDevicePositionBack];       
+          }  
+          else {  
+              newCamera = [self camerWithPosition:AVCaptureDevicePositionFront];  
+              self.lightBtn.selected = YES;  
+              [self autoButtonClicked:self.autoBtn];       
+          }  
+	    
+          //生成新的输入  
+          newInput = [AVCaptureDeviceInput deviceInputWithDevice:newCamera error:nil];  
+          if (newInput != nil) {  
+              [self.session beginConfiguration];  
+              [self.session removeInput:self.input];  
+              if ([self.session canAddInput:newInput]) {  
+                  [self.session addInput:newInput];  
+                  self.input = newInput;       
+              } else {  
+                  [self.session addInput:self.input];  
+              }  
+              [self.session commitConfiguration];  
+	                  
+          } else if (error) {  
+              NSLog(@"toggle carema failed, error = %@", error);  
+          }  
+	              
+       [self.previewLayer addAnimation:animation forKey:@"OglFlipAnimation"];  
+      }  
+  }  
+	    
+ - (void)setupFocusPointManual{  
+	      
+     CGPoint point = CGPointMake(SCREEN_WIDTH / 2.0, 35 + self.previewLayer.bounds.size.height / 2.0);  
+     [self focusAtPoint:point];  
+ } 
+	
+ // 设置相机焦点
+ - (void)focusAtPoint:(CGPoint)point{  
+	      
+     CGSize size = self.view.bounds.size;  
+     CGPoint focusPoint = CGPointMake( point.y /size.height ,1-point.x/size.width );  
+     NSError *error;  
+     if ([self.device lockForConfiguration:&amp;error]) {  
+	          
+         if ([self.device isFocusModeSupported:AVCaptureFocusModeAutoFocus]) {  
+             [self.device setFocusPointOfInterest:focusPoint];  
+             [self.device setFocusMode:AVCaptureFocusModeAutoFocus];  
+         }  
+	          
+         if ([self.device isExposureModeSupported:AVCaptureExposureModeAutoExpose ]) {  
+             [self.device setExposurePointOfInterest:focusPoint];  
+             [self.device setExposureMode:AVCaptureExposureModeAutoExpose];  
+         }  
+	          
+         [self.device unlockForConfiguration];  
+         _focusView.center = point;  
+         _focusView.hidden = NO;  
+         [UIView animateWithDuration:0.3 animations:^{  
+             _focusView.transform = CGAffineTransformMakeScale(1.25, 1.25);  
+         }completion:^(BOOL finished) {  
+             [UIView animateWithDuration:0.5 animations:^{  
+                 _focusView.transform = CGAffineTransformIdentity;  
+             } completion:^(BOOL finished) {  
+                 _focusView.hidden = YES;  
+             }];  
+         }];  
+     }  
+	      
+ }
+	
+ // 根据点击手势设置焦点  
+ - (void)focusGesture:(UITapGestureRecognizer*)gesture{  
+     CGPoint point = [gesture locationInView:gesture.view];  
+     CGRect frame = self.previewLayer.frame;  
+	      
+     //去除预览区以外的点  
+     if ((point.x &gt;= frame.origin.x &amp;&amp; point.x &lt;= frame.origin.x + frame.size.width) &amp;&amp;  
+         (point.y &gt;= frame.origin.y &amp;&amp; point.y &lt;= frame.origin.y + frame.size.height)) {  
+	      
+         [self focusAtPoint:point];  
+     }  
+ } 
+	
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>拍照、获取照片</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  - (void)takePhotos{  
+	      
+      AVCaptureConnection *conntion = [self.imageOutput connectionWithMediaType:AVMediaTypeVideo];  
+      if (!conntion) {  
+          [YMLPrompt showMessage:@"拍照失败，请重试" delay:3.0f];  
+          return;  
+      }  
+	      
+      [self.imageOutput captureStillImageAsynchronouslyFromConnection:conntion completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {  
+	          
+          if (imageDataSampleBuffer == nil) {  
+              return ;  
+          }  
+	          
+          NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];  
+          UIImage *image = [UIImage imageWithData:imageData];  
+	          
+          image = [image normalizedImage]; //修正图片方向  
+	          
+          [self.session stopRunning];  
+      }];  
+	      
+  }
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>获取照片后，保存到相册</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  - (void)saveImageToPhotoAlbum:(UIImage *)savedImage{  
+	      
+      UIImageWriteToSavedPhotosAlbum(savedImage, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);  
+  }  
+	  
+  // 保存完成回调  
+  - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(voidvoid *)contextInfo  
+	  
+  {  
+      NSString *msg = nil ;  
+      if(error != NULL){  
+          msg = @"保存图片失败" ;  
+      }else{  
+          msg = @"保存图片成功" ;  
+      }  
+      kLog(@"%@",msg);  
+  }
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p><strong>注意点：</strong></p>
+<ul>
+  <li>由于目前苹果对用户隐私的保护，需要在 Info.plist 文件中添加如下信息：
+                       <key>NSCameraUsageDescription</key>
+                       <string>相机使用说明</string>
+                       <key>NSPhotoLibraryUsageDescription</key>
+                       <string>相册使用说明</string></li>
+  <li>相机拍照默认是横屏的（Home键在右手侧），拍出来的照片方向不是向上的，在直接预览或者在相册中查看却都是方向向上的，但是在裁剪之后得  到的图片方向不是向上的。通过图片的 imageOrientation 属性可以看到，拍出来的图片方向是 UIImageOrientationRight，所以需要调整图片方向</li>
+</ul>
+
+<p><strong>在UIImage类别中添加一个修正图片方向的方法:</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- (UIImage *)normalizedImage {
+	    
+	if (self.imageOrientation == UIImageOrientationUp) return self;
+	
+	UIGraphicsBeginImageContextWithOptions(self.size, NO, self.scale);
+	[self drawInRect:(CGRect){0, 0, self.size}];
+	UIImage *normalizedImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	    
+	return normalizedImage;
+}
+</code></pre></div></div>
+
+<p><strong>对图片进行裁剪</strong></p>
+
+<p>裁剪图片在 GHPhotoClipView 类中实现</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    #import &lt;UIKit/UIKit.h&gt;  
+      
+    @interface GHPhotoClipView : UIView  
+      
+    /** 用于裁剪的原始图片 */  
+    @property (strong, nonatomic) UIImage *image;  
+      
+    /** 重新拍照block */  
+    @property (copy, nonatomic) void(^remakeBlock)();  
+      
+    /** 裁剪完成block */  
+    @property (copy, nonatomic) void(^sureUseBlock)(UIImage *image);  
+      
+      
+    @end  
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    #import "GHPhotoClipView.h"  
+    
+    #import "GHPhotoClipCoverView.h"  
+      
+    @interface GHPhotoClipView ()  
+      
+    /** 图片 */  
+    @property (strong, nonatomic) UIImageView *imageV;  
+      
+    /** 图片加载后的初始位置 */  
+    @property (assign, nonatomic) CGRect norRect;  
+      
+    /** 裁剪框frame */  
+    @property (assign, nonatomic) CGRect showRect;  
+      
+      
+    @end  
+      
+    @implementation GHPhotoClipView  
+      
+    - (instancetype)initWithFrame:(CGRect)frame{  
+          
+        self = [super initWithFrame:frame];  
+          
+        if (self) {  
+              
+            self.backgroundColor = [UIColor blackColor];  
+            [self createSubViews];  
+        }  
+        return self;  
+    }  
+      
+    - (void)createSubViews{  
+        // 添加图片  
+        
+        self.imageV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0 , self.frame.size.width, self.frame.size.width)];  
+        [self addSubview:self.imageV];  
+      
+        // 裁剪层
+        
+        GHPhotoClipCoverView *coverView = [[GHPhotoClipCoverView alloc] initWithFrame:self.bounds];  
+        [coverView addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGR:)]];  
+        [coverView addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinGR:)]];  
+        self.showRect = CGRectMake(1, self.frame.size.height * 0.15,self.frame.size.width - 2 ,self.frame.size.width - 2);  
+        coverView.showRect = self.showRect;  
+        [self addSubview:coverView];  
+
+        // 底部view  
+        
+        UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height - 60, self.frame.size.width, 60)];  
+        bottomView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.6f];  
+        [coverView addSubview:bottomView];  
+        [YMLFactory btnWithFrame:CGRectMake(10, 15, 60, 30) Type:UIButtonTypeCustom Title:@"重拍" fontSize:15 titleColor:[UIColor whiteColor] bgColor:[UIColor clearColor] target:self selector:@selector(leftButtonClicked) superView:bottomView];  
+        [YMLFactory btnWithFrame:CGRectMake(bottomView.frame.size.width - 90, 15, 80, 30) Type:UIButtonTypeCustom Title:@"使用照片" fontSize:15 titleColor:[UIColor whiteColor] bgColor:[UIColor clearColor] target:self selector:@selector(rightButtonClicked) superView:bottomView];  
+          
+    }  
+      
+    - (void)setImage:(UIImage *)image{  
+          
+        if (image) {  
+            CGFloat ret = image.size.height / image.size.width;  
+            _imageV.height = _imageV.width * ret;  
+            _imageV.center = self.center;  
+            _norRect = _imageV.frame;  
+            _imageV.image = image;  
+        }  
+          
+        _image = image;  
+          
+    }  
+      
+    // 拖动手势
+    
+    - (void)panGR:(UIPanGestureRecognizer *)sender{  
+          
+        CGPoint point = [sender translationInView:self];  
+        kLog(@"%f %f",point.x,point.y);  
+        _imageV.center = CGPointMake(_imageV.centerX + point.x, _imageV.centerY + point.y);  
+        [sender setTranslation:CGPointZero inView:self];  
+          
+        if (sender.state == UIGestureRecognizerStateEnded) {  
+              
+            [UIView animateWithDuration:0.3f animations:^{  
+                _imageV.frame = _norRect;  
+            }];  
+        }  
+    }  
+      
+    // 缩放手势
+    
+    - (void)pinGR:(UIPinchGestureRecognizer *)sender{  
+          
+        _imageV.transform = CGAffineTransformScale(_imageV.transform, sender.scale, sender.scale);  
+      
+        sender.scale = 1.0;  
+          
+        if (sender.state == UIGestureRecognizerStateEnded) {  
+              
+            [UIView animateWithDuration:0.3f animations:^{  
+                _imageV.frame = _norRect;  
+            }];  
+        }  
+    }  
+      
+      
+    #pragma mark -- 重拍  
+      
+    - (void)leftButtonClicked{  
+        kLog(@"重拍");  
+        if (self.remakeBlock) {  
+            self.remakeBlock();  
+        }  
+          
+    }  
+      
+    #pragma mark -- 使用照片  
+      
+    - (void)rightButtonClicked{  
+        kLog(@"使用照片");  
+          
+        CGFloat w = self.image.size.width;  
+        CGFloat h = self.image.size.height;  
+      
+        CGFloat originX = (1- self.showRect.size.width / self.norRect.size.width) / 2.0 * w;  
+        CGFloat originY = (self.showRect.origin.y - self.norRect.origin.y) / self.norRect.size.height * h;  
+        CGFloat clipW = self.showRect.size.width / self.norRect.size.width * w;  
+        CGFloat clipH = self.showRect.size.height / self.norRect.size.height * h;  
+          
+        CGRect clipRect = CGRectMake(originX, originY, clipW, clipH);  
+        UIImage *image = [Tools imageFromImage:self.image inRect:clipRect];  
+      
+        _imageV.image = image;  
+          
+        if (self.sureUseBlock) {  
+            self.sureUseBlock(image);  
+        }  
+    }  
+     
+    @end  
+</code></pre></div></div>
+
+<p><strong>裁剪图片的方法</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    /** 
+     * 从图片中按指定的位置大小截取图片的一部分 
+     * UIImage image 原始的图片 
+     * CGRect rect 要截取的区域 
+     */  
+    + (UIImage *)imageFromImage:(UIImage *)image inRect:(CGRect)rect{  
+          
+        //将UIImage转换成CGImageRef  
+        CGImageRef sourceImageRef = [image CGImage];  
+          
+        //按照给定的矩形区域进行剪裁  
+        CGImageRef newImageRef = CGImageCreateWithImageInRect(sourceImageRef, rect);  
+          
+        //将CGImageRef转换成UIImage  
+        UIImage *newImage = [UIImage imageWithCGImage:newImageRef];  
+          
+        //返回剪裁后的图片  
+        return newImage;  
+    }  
+</code></pre></div></div>
+
+<p><strong>裁剪框效果</strong></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#import &lt;UIKit/UIKit.h&gt;  
+  
+@interface GHPhotoClipCoverView : UIView  
+  
+/** 显示方框区域 */  
+@property (assign, nonatomic) CGRect showRect;  
+  
+@end 
+
+
+
+#import "GHPhotoClipCoverView.h"  
+      
+@implementation GHPhotoClipCoverView  
+      
+- (instancetype)initWithFrame:(CGRect)frame{  
+          
+    self = [super initWithFrame:frame];  
+          
+    if (self) {  
+        self.backgroundColor = [UIColor clearColor];  
+    }  
+    return self;  
+}  
+      
+- (void)drawRect:(CGRect)rect{  
+          
+    [super drawRect:rect];  
+          
+    CGContextRef ctx = UIGraphicsGetCurrentContext();  
+          
+    // 整体颜色  
+    
+    CGContextSetRGBFillColor(ctx, 0.15, 0.15, 0.15, 0.6);  
+    CGContextFillRect(ctx, rect);   //draw the transparent layer  
+          
+    // 中间清空矩形框  
+    
+    CGRect clearDrawRect = self.showRect;  
+    CGContextClearRect(ctx, clearDrawRect);  
+          
+    // 边框  
+    
+    CGContextStrokeRect(ctx, clearDrawRect);  
+    
+    //颜色  
+    
+    CGContextSetRGBStrokeColor(ctx, 1, 1, 1, 1);  
+    
+    //线宽  
+    
+    CGContextSetLineWidth(ctx, 0.5);              
+    
+    //矩形  
+    
+    CGContextAddRect(ctx, clearDrawRect);         
+    
+    CGContextStrokePath(ctx);  
+}  
+    
+@end  
+
+</code></pre></div></div>
+
+<p>完整Demo地址：<a href="https://github.com/HuberyYang/CameraDemo.git">CameraDemo</a></p>
+
+:ET
