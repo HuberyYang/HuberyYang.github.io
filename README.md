@@ -1,6 +1,11 @@
 # HuberyYang Blog
 
-> 个人博客，Fork自 [BY](http://qiubaiying.github.io) 
+> 个人博客, 记录平时积累的一些知识点
 
+###文章类别
 
-博客中会写一些工作或者生活相关的文章，记录生活，拥抱自由。
+- iOS - oc
+- iOS - swift
+- flutter
+- java
+
