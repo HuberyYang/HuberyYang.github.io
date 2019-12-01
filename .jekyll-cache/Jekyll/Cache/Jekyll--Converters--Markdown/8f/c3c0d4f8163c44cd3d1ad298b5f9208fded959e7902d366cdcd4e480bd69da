@@ -1,18 +1,0 @@
-I"#<p>在OC中我们习惯于在pch文件中定义一个宏打印，以便于程序的调试，但在swift中不存在pch文件，按之前的方式是不行了。swift中可以单独创建一个文件当做pch文件使用，然后将
-宏转换成函数</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// debug log</span>
-<span class="kd">func</span> <span class="n">kLog</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">message</span><span class="p">:</span><span class="kt">T</span><span class="p">,</span><span class="nv">file</span><span class="p">:</span><span class="kt">String</span> <span class="o">=</span> <span class="kd">#file</span><span class="p">,</span><span class="nv">funcName</span><span class="p">:</span><span class="kt">String</span> <span class="o">=</span> <span class="kd">#function</span><span class="p">,</span><span class="nv">lineName</span><span class="p">:</span><span class="kt">Int</span> <span class="o">=</span> <span class="kd">#line</span><span class="p">){</span>
-    
-    <span class="cp">#if DEBUG</span>
-        <span class="k">let</span>  <span class="nv">flieName</span> <span class="o">=</span> <span class="p">(</span><span class="n">file</span> <span class="k">as</span> <span class="kt">NSString</span><span class="p">)</span><span class="o">.</span><span class="n">lastPathComponent</span>
-        <span class="k">let</span> <span class="nv">formter</span> <span class="o">=</span> <span class="kt">DateFormatter</span><span class="p">()</span>
-        <span class="n">formter</span><span class="o">.</span><span class="n">dateFormat</span> <span class="o">=</span> <span class="s">"yyyy-MM-dd HH:mm:ss"</span>
-        <span class="k">let</span> <span class="nv">printDate</span> <span class="o">=</span> <span class="n">formter</span><span class="o">.</span><span class="nf">string</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="kt">Date</span><span class="p">())</span>
-        <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="n">printDate</span><span class="se">)</span><span class="s">: </span><span class="se">\(</span><span class="n">flieName</span><span class="se">)</span><span class="s"> </span><span class="se">\(</span><span class="n">funcName</span><span class="se">)</span><span class="s"> 第</span><span class="se">\(</span><span class="n">lineName</span><span class="se">)</span><span class="s">行: </span><span class="se">\(</span><span class="n">message</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
-    <span class="cp">#endif</span>
-<span class="p">}</span>
-
-
-</code></pre></div></div>
-:ET
