@@ -12,13 +12,13 @@ tags:
     - bitcode
 ---
 
-转自: <http://xelz.info/blog/2018/11/24/all-you-need-to-know-about-bitcode/>
+>转自: <http://xelz.info/blog/2018/11/24/all-you-need-to-know-about-bitcode/>
 
-## 0x00 前言 
+**0x00 前言**
 
 苹果在WWDC 2015大会上引入了bitcode，随后在Xcode7中添加了在二进制中嵌入bitcode(Enable Bitcode)的功能，并且默认设置为开启状态。很多开发者在集成第三方SDK的时候都被bitcode坑过一把，然后google百度一番发现只要关闭bitcode就可以了，但是大部分开发者都不清楚bitcode到底是什么东西。这篇文档将给大家详细地介绍与bitcode有关的内容。 
 
-## 0x01 什么是bitcode 
+**0x01 什么是bitcode**
 
 研究bitcode之前需要先了解一下LLVM，因为bitcode是由LLVM引入的一种中间代码(Intermediate Representation，简称IR)，它是源代码被编译为二进制机器码过程中的中间表示形态，它既不是源代码，也不是机器码。从代码组织结构上看它比较接近机器码，但是在函数和指令层面使用了很多高级语言的特性。 
 
@@ -36,7 +36,7 @@ LLVM是一套优秀的编译器框架，目前NDK/Xcode均采用LLVM作为默认
 
 在这个体系中，不同语言的源代码将会被转化为统一的bitcode格式，三个模块可以充分复用，防止重复造轮子。如果要开发一门新的`x语言`，只需要造一个x语言的前端，将x语言的源代码编译为bitcode，优化和后端的事情完全不用管。同理，如果新的芯片架构问世，则只需要基于LLVM重新写一套目标平台的后端，非常方便。 
 
-## 0x02 bitcode初探 
+**0x02 bitcode初探**
 
 既然bitcode是代码的一种表示形式，因此它也会有自己的一套独立的语法，可以通过一个简单的例子来一探究竟，这里以clang为例，swift的操作和结果可能稍有不同。 
 
@@ -144,7 +144,7 @@ test.ll的全部内容如下
 
    [3]: https://llvm.org/docs/LangRef.html
 
-## 0x03 Enable Bitcode 
+**0x03 Enable Bitcode**
 
 在对bitcode有了一个直观的认识之后，再来看一下Apple围绕bitcode做了什么。Xcode中对Enable Bitcode这个配置的解释是: 
 
@@ -154,7 +154,7 @@ test.ll的全部内容如下
 > 
 >    [4]: https://help.apple.com/xcode/mac/10.1/index.html?localePath=en.lproj#/itcaec37c2a6
 
-#### Enable Bitcode (ENABLE_BITCODE) 
+Enable Bitcode (ENABLE_BITCODE)
 > 
 > Activating this setting indicates that the target or project should generate bitcode during compilation for platforms and architectures that support it. For Archive builds, bitcode will be generated in the linked binary for submission to the App Store. For other builds, the compiler and linker will check whether the code complies with the requirements for bitcode generation, but will not generate actual bitcode. 
 
@@ -307,7 +307,7 @@ test.ll的全部内容如下
 
 这样的方式编译出的文件结构与`-fembed-bitcode` 的结果是一样的，唯一的区别就是 `__LLVM,__bitcode` 和 `__LLVM,__cmdline` 的内容并没有将实际的bitcode文件和编译参数嵌入进来，取而代之的一个字节的占位符 `0x00`
 
-## 0x04 Bitcode Bundle 
+**0x04 Bitcode Bundle**
 
 已经搞清楚了bitcode是如何嵌入在object文件里的，但是object只是编译过程的中间产物，真正运行的代码是多个object文件经过链接之后的可执行文件，接下来要分析下object中嵌入的bitcode是如何被链接的：     
     
@@ -455,7 +455,7 @@ header的结构非常清晰，内容基本包含这些：
 
 现在可以理解，为什么苹果要强推bitcode了吧？开发者把bitcode提交到App Store Connect之后，如果苹果发布了使用新芯片的iPhone，支持更高效的指令，开发者不需要做任何操作，App Store Connect自己就可以编译出针对新产品优化过的app并通过App Store分发给用户，不需要开发者自己重新打包上架，这样一来苹果的Store生态就不需要依赖开发者的积极性了。 
 
-## 0x05 使用Bitcode导出ipa 
+**0x05 使用Bitcode导出ipa**
 
 前面已经提到，如果要以bitcode方式上传app，必须在开启bitcode的状态下，进行Archive打包，才会得到带有bitcode的app。大部分app都会依赖一堆第三方sdk，如果此时项目里依赖的某一个或者几个sdk没有开启bitcode，那么很遗憾，Xcode会拒绝编译并给出类似这样的提示： 
 
@@ -511,9 +511,9 @@ header的结构非常清晰，内容基本包含这些：
 
    [10]: http://xelz.info/assets/2018/machoview2.png
 
-## 0x06 拓展阅读 
+**0x06 拓展阅读**
 
-#### bitcode不是bytecode 
+> bitcode不是bytecode 
 
 bitcode不能翻译为字节码(bytecode)，显然从字面上看这两个词代表的含义并不等同：字节码是按照字节存取的，一般其控制代码的最小宽度是一个字节(也即8个bits)，而bitcode是按位(bit)存取，最大化利用空间。比如用bitcode中使用`6-bit characters`来编码只包含字母/数字的字符串 
         
@@ -535,19 +535,19 @@ bitcode不能翻译为字节码(bytecode)，显然从字面上看这两个词代
 
    [11]: http://llvm.org/docs/BitCodeFormat.html
 
-#### bitcode的兼容性 
+>bitcode的兼容性 
 
 bitcode的格式目前是一直在变化的，并且无法向前兼容，举例来说Xcode8的编译器无法读取并解析xcode9产生的bitcode。 
 
 另外苹果的bitcode格式与社区版LLVM的bitcode有一定差异，但苹果并不会及时开源Xcode最新版编译器的代码，所以如果你使用第三方基于社区版LLVM制作的编译器进行开发，不要尝试开启并提交bitcode到App Store Connect，否则会因为App Store Connect解析不了你的bitcode而被拒。 
 
-#### bitcode不是架构无关代码 
+>bitcode不是架构无关代码 
 
 如果一个app同时要支持armv7和arm64两种架构，那么同一个源代码文件将会被编译出两份bitcode，也就是说，在一开始介绍LLVM的那张图中，并不是代表同一份bitcode代码可以直接被编译为不同目标机器的机器码。 
 
 LLVM只是统一了中间语言的结构和语法格式，但不能像Java那样，Compile Once & Run Everywhere. 
 
-#### 如何判断是否开启bitcode 
+>如何判断是否开启bitcode 
 
 可以通过otool检查二进制文件，网上有很多类似这样的方法： 
     
@@ -564,7 +564,7 @@ LLVM只是统一了中间语言的结构和语法格式，但不能像Java那样
           size 0x0000000000000001
     
 
-#### bitcode是否能反编译出源代码 
+>bitcode是否能反编译出源代码 
 
 从科学严谨的角度来说，无法给出确定的答案，但是这个问题跟“二进制文件是否能反编译出源代码”是一样的道理。编译是一个将源代码一层一层不断低级化的过程，每一层都可能会丢失一些特性，产生不可逆的转换，把源代码编译为bitcode或是二进制机器码是五十步之于百步的关系。在通常情况下，反编译bitcode跟反编译二进制文件比要相对容易一些，但通过bitcode反编译出和源代码语义完全相同的代码，也是几乎不可能的。 
 
