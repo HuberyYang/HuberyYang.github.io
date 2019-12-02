@@ -9,8 +9,6 @@ header-img: img/article_head_git_01.jpg
 catalog:    true                     
 tags:                             
     - Git 
-    - iOS
-    - ProjectManagement
 ---
 
 

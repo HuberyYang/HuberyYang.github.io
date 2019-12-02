@@ -9,7 +9,6 @@ header-img: img/article_head_print.jpg
 catalog:    true                     
 tags:                             
     - iOS
-    - OC
     - Swift
 ---
 
