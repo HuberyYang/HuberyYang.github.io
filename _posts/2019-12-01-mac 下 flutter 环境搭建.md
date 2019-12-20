@@ -42,7 +42,7 @@ export PATH=/xxxx/flutter/bin:$PATH
 ```
 flutter doctor
 ```
-![](https://ws2.sinaimg.cn/large/006tNbRwly1g9heg6i2n1j30vu0dkdgh.jpg)
+![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20191201/8dec842edc9cf948a654d670ac9f3c26.jpg)
 
 IDE选 `Android Studio` 或者 `Intellij IDEA` 任一个就行了，我这里安装了 `Android Studio`
 
@@ -50,11 +50,11 @@ IDE选 `Android Studio` 或者 `Intellij IDEA` 任一个就行了，我这里安
 
 > 菜单栏 `Android Studio` - `Preferences` - `Plugins` 搜索 `flutter`、`Dart`插件并安装
 
-![](http://q1u57zg2s.bkt.clouddn.com/blog/2019-12-01-preferences_%20plugins_flutter.png)
+![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20191201/8a90b754321c4f5d683630cada27d124.png)
 
-![](http://q1u57zg2s.bkt.clouddn.com/blog/2019-12-01-preferences_%20plugins_dart.png)
+![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20191201/5d95d6a6331e0f30ef8b75f0a7f49bf1.png)
 
-![](http://q1u57zg2s.bkt.clouddn.com/blog/2019-12-01-preferences_%20plugins_installed.png)
+![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20191201/5440cadd5d0932bdfbb8115967a8fa76.png)
 
 **安装 `Xcode`**
 
@@ -64,23 +64,23 @@ IDE选 `Android Studio` 或者 `Intellij IDEA` 任一个就行了，我这里安
 
 - 启动 `Android Studio`，选择 `Start a new Flutter project`
 
-	![](http://q1u57zg2s.bkt.clouddn.com/blog/2019-12-01-1.jpg)
+	![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20191201/4b0892e4dbb0bacf06be12032c9182a5.jpg)
 
 - 选择第一项创建一个`flutter`应用
 
-	![](http://q1u57zg2s.bkt.clouddn.com/blog/2019-12-01-2.jpg)
+	![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20191201/6f7d179d4135a37a475aff535d66ab21.jpg)
 	
 - 配置应用名称、存储位置、描述等信息
 
-	![](http://q1u57zg2s.bkt.clouddn.com/blog/2019-12-01-3.jpg)
+	![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20191201/c031cfe136f81eca3724f043531f2b9f.jpg)
 	
 - 点击 `Finish` 就创建完成了
 	
-	![](http://q1u57zg2s.bkt.clouddn.com/blog/2019-12-01-4.jpg)
+	![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20191201/96c7ee13d7ee925675192bbe548a98a0.jpg)
 	
 - 选择一个 iOS / Android 模拟器，然后点击启动；OK， flutter 之路开始了 ~
 
-	![](http://q1u57zg2s.bkt.clouddn.com/blog/2019-12-01-5.jpg)
+	![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20191201/14a8b3fbbbd7eb5bae287ed5364f683a.jpg)
 	
 
 

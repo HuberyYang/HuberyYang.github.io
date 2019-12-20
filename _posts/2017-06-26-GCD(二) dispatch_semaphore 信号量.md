@@ -154,7 +154,7 @@ dispatch_semaphore_signal(dispatch_semaphore_t dsema);
 
     即使异步并行也是依次执行
 
-![](http://upload-images.jianshu.io/upload_images/2475558-1087948842f2c5c2?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20170626/e9ee3a0becfa4b39781229cd19265e0f.png)
 
 * 通过信号量控制最大并发数
 
@@ -181,4 +181,4 @@ dispatch_semaphore_t sem = dispatch_semaphore_create(2);
 
     从结果可以看到，同时最多只有2个线程在同时执行
 
-![](http://upload-images.jianshu.io/upload_images/2475558-38c78464a61ec064?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20170626/7a7e49ea77f3d4bce8b30764bbc51468.png)
