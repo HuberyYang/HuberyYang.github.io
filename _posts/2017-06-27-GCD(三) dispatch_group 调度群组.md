@@ -75,7 +75,7 @@ dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
 NSLog(@"执行后续任务");
 ```
 
-![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20170627/567e4772613d739744d5b8429460b1af.png)
+![](https://huberyblog.oss-cn-hangzhou.aliyuncs.com/20170627/567e4772613d739744d5b8429460b1af.png)
 
 **使用dispatch_group_notify**
 
@@ -101,7 +101,7 @@ dispatch_group_notify(group, queue, ^{
 });
 ```
 
-![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20170627/44a519cc6ac860ad36ecfe82e235fa30.png)
+![](https://huberyblog.oss-cn-hangzhou.aliyuncs.com/20170627/44a519cc6ac860ad36ecfe82e235fa30.png)
 
 **dispatch_group_enter 与 dispatch_group_leave 的使用**
 
@@ -133,7 +133,7 @@ dispatch_group_notify(group, queue, ^{
 });
 ```
 
-![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20170627/bf2478c8773e5b5aab3768388adb46d8.png)
+![](https://huberyblog.oss-cn-hangzhou.aliyuncs.com/20170627/bf2478c8773e5b5aab3768388adb46d8.png)
 
 从结果可以看出，后续任务没有在s1、s2、s3都执行完成后执行，此时就可以使用`dispatch_group_enter` 告诉调度群有组新的任务加入，使未完成任务数增加；使用`dispatch_group_leave` 使未完成任务数减少
 
@@ -170,7 +170,7 @@ dispatch_group_notify(group, queue, ^{
 });
 ```
 
-![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20170627/5052734fa36615faa4c0445996220756.png)
+![](https://huberyblog.oss-cn-hangzhou.aliyuncs.com/20170627/5052734fa36615faa4c0445996220756.png)
 
 > 此外，dispatch_group_enter 与 dispatch_group_leave 也可以直接使用，但需要保持两者调用次数一致，配合异步执行，其效果和 `dispatch_group_async` 类似
 

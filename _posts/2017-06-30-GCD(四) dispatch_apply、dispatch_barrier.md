@@ -39,7 +39,7 @@ dispatch_apply(5, queue, ^(NSUInteger index) {
 });
 ```
 
-![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20170630/d273989ec4813f4eca9678a41162ec4a.png)
+![](https://huberyblog.oss-cn-hangzhou.aliyuncs.com/20170630/d273989ec4813f4eca9678a41162ec4a.png)
 
     上面是并行队列，如果换成串行队列，会按顺序执行block
 
@@ -47,7 +47,7 @@ dispatch_apply(5, queue, ^(NSUInteger index) {
 dispatch_queue_t queue = dispatch_queue_create("com.serial", DISPATCH_QUEUE_SERIAL);
 ```
 
-![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20170630/173976bad305540d5404d9a1b25bd8e6.png)
+![](https://huberyblog.oss-cn-hangzhou.aliyuncs.com/20170630/173976bad305540d5404d9a1b25bd8e6.png)
 
 * 对于批量处理相同的任务`dispatch_apply` 相较于 for 和 while 能更合理的使用资源
 
@@ -78,7 +78,7 @@ for (int index = 0; index < testArr.count; index ++) {
 NSLog(@"执行完毕");
 ```
 
-![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20170630/769acf4c054d32bc0158fc3d2160de37.png)
+![](https://huberyblog.oss-cn-hangzhou.aliyuncs.com/20170630/769acf4c054d32bc0158fc3d2160de37.png)
 
     从结果中可以看出，执行过程创建了大量新线程
 
@@ -92,7 +92,7 @@ dispatch_apply(testArr.count, queue, ^(NSUInteger index) {
 });
 NSLog(@"执行完毕");
 ```
-![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20170630/7f5638350ba50db9f6fc76d0b0ba6b3d.png)
+![](https://huberyblog.oss-cn-hangzhou.aliyuncs.com/20170630/7f5638350ba50db9f6fc76d0b0ba6b3d.png)
 
 > 相较于 for 循环，`dispatch_apply`在执行的过程中新创建的线程数要少得多，并且`dispatch_apply`会在其关联的block任务都执行完成后再进行后续任务的执行。所以，`dispatch_apply`在批量任务处理中还是很好用的。
 
@@ -152,7 +152,7 @@ dispatch_queue_t cQueue = dispatch_queue_create("com.concurrent", DISPATCH_QUEUE
     });
 ```
 
-![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20170630/4b05b4c006f26d97cecf3df17a1bd5b7.png)
+![](https://huberyblog.oss-cn-hangzhou.aliyuncs.com/20170630/4b05b4c006f26d97cecf3df17a1bd5b7.png)
 
 * 注意点
 
@@ -205,6 +205,6 @@ dispatch_barrier_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT
     });
 ```
 
-![](https://blog-1300956916.cos.ap-beijing.myqcloud.com/20170630/c25f3e26410365feab65e7add7556ce4.png)
+![](https://huberyblog.oss-cn-hangzhou.aliyuncs.com/20170630/c25f3e26410365feab65e7add7556ce4.png)
 
 从截图中可以看出，栅栏已经失效；需配合 `DISPATCH_QUEUE_CONCURRENT` 创建的队列才能生效。
