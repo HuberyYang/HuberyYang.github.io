@@ -21,7 +21,7 @@ Image("local image name")
 
 ### 加载网络图片
 
-- 使用官方api下载
+- 使用`URLSession`下载
 
 	```
 	import SwiftUI
