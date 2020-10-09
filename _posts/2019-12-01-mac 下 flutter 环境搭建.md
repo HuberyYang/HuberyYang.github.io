@@ -8,9 +8,7 @@ author:     HuberyYang
 header-img: img/article_head_road.jpg
 catalog:    true                     
 tags:                             
-    - mac
     - flutter
-    - 大前端
 ---
 
 
