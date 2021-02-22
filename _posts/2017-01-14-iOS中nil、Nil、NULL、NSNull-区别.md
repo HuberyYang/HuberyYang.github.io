@@ -28,8 +28,8 @@ Class anotherClass = [NSString class];
 ```
 __3.NULL 是任意的 C 指针空值__
 ```
-intint *pointerToInt = NULL;  
-charchar *pointerToChar = NULL;  
+int *pointerToInt = NULL;  
+char *pointerToChar = NULL;  
 struct TreeNode *rootNode = NULL; 
 ```
 __4.NSNull 是一个代表空值的类，是一个 ObjC 对象。实际上它只有一个单例方法：+[NSNull null]，一般用于表示集合中值为空的对象。__
