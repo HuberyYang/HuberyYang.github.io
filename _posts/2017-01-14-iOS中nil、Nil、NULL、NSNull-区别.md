@@ -32,7 +32,7 @@ int *pointerToInt = NULL;
 char *pointerToChar = NULL;  
 struct TreeNode *rootNode = NULL; 
 ```
-__4.NSNull 是一个代表空值的类，是一个 ObjC 对象。实际上它只有一个单例方法：+[NSNull null]，一般用于表示集合中值为空的对象。__
+__4.NSNull 是OC中一个代表空值的类，只有一个类方法：+[NSNull null]，一般用于表示集合中值为空的对象。__
 ```
 // 因为 nil 被用来用为集合结束的标志，所以 nil 不能存储在 Foundation 集合里。  
 NSArray *array = [NSArray arrayWithObjects:@"one", @"two", nil nil];  
